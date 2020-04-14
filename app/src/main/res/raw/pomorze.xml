@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version="0.6" generator="Osmosis 0.47">
+  <bounds minlon="16.68672" minlat="53.48060" maxlon="19.66069" maxlat="55.08543" origin="osmium/1.8.0"/>
+  <node id="868392528" version="4" timestamp="2018-04-21T14:09:17Z" lat="54.6967981" lon="18.6822196">
+    <tag k="denotation" v="natural_monument"/>
+    <tag k="height" v="18"/>
+    <tag k="leaf_type" v="broadleaved"/>
+    <tag k="name" v="Kasztanowiec zwyczajny"/>
+    <tag k="natural" v="tree"/>
+  </node>
+  <node id="1411597339" version="3" timestamp="2019-08-23T06:24:27Z" lat="53.8174207" lon="17.5324197">
+    <tag k="denotation" v="natural_monument"/>
+    <tag k="diameter" v="400"/>
+    <tag k="genus" v="Quercus"/>
+    <tag k="leaf_cycle" v="deciduous"/>
+    <tag k="leaf_type" v="broadleaved"/>
+    <tag k="name" v="Dąb Bartuś"/>
+    <tag k="natural" v="tree"/>
+    <tag k="start_date" v="1400r."/>
+  </node>
+  <node id="1792679601" version="6" timestamp="2017-09-12T18:37:21Z" lat="54.608996" lon="18.5135919">
+    <tag k="alt_name" v="Świętopełek"/>
+    <tag k="denotation" v="natural_monument"/>
+    <tag k="genus" v="Fraxinus"/>
+    <tag k="is_in:city" v="Gdynia"/>
+    <tag k="leaf_type" v="broadleaved"/>
+    <tag k="name" v="Jesion wyniosły"/>
+    <tag k="name:botanical" v="Fraxinus excelsior"/>
+    <tag k="name:en" v="Ash"/>
+    <tag k="natural" v="tree"/>
+    <tag k="note" v="obwód 462 i 520cm, wiek 250lat"/>
+    <tag k="opening_hours" v="24/7"/>
+    <tag k="ref" v="296"/>
+    <tag k="species:wikidata" v="Q156907"/>
+    <tag k="species:wikipedia" v="pl:Jesion wyniosły"/>
+    <tag k="taxon" v="Fraxinus excelsior"/>
+    <tag k="taxon:genus:en" v="Ash"/>
+    <tag k="taxon:genus:pl" v="Jesion"/>
+  </node>
+  <node id="1792679640" version="5" timestamp="2017-09-12T18:37:21Z" lat="54.6090592" lon="18.5135722">
+    <tag k="alt_name" v="Mściwoj"/>
+    <tag k="denotation" v="natural_monument"/>
+    <tag k="genus" v="Fraxinus"/>
+    <tag k="is_in:city" v="Gdynia"/>
+    <tag k="leaf_type" v="broadleaved"/>
+    <tag k="name" v="Jesion wyniosły"/>
+    <tag k="name:botanical" v="Fraxinus excelsior"/>
+    <tag k="name:en" v="Ash"/>
+    <tag k="natural" v="tree"/>
+    <tag k="note" v="obwód 462 i 520cm, wiek 250lat"/>
+    <tag k="opening_hours" v="24/7"/>
+    <tag k="ref" v="296"/>
+    <tag k="species:wikidata" v="Q156907"/>
+    <tag k="species:wikipedia" v="pl:Jesion wyniosły"/>
+    <tag k="taxon" v="Fraxinus excelsior"/>
+    <tag k="taxon:genus:en" v="Ash"/>
+    <tag k="taxon:genus:pl" v="Jesion"/>
+  </node>
+</osm>

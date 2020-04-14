@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "478884688898",
+    "firebase_url": "https://citygame2019-dc46c.firebaseio.com",
+    "project_id": "citygame2019-dc46c",
+    "storage_bucket": "citygame2019-dc46c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478884688898:android:658d8dea0cb8a23e",
+        "android_client_info": {
+          "package_name": "com.example.citygame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "478884688898-ctd4cihuo7m43f9vgl87fm05mege5f1v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.citygame",
+            "certificate_hash": "2cccdbb0666405d7d484546c798a334525c09ee3"
+          }
+        },
+        {
+          "client_id": "478884688898-69rvj8rcuaf2pb777nnbvjochod59ptv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnGOvOMtEz9pxBvPstYbuZhMEL5f0rPDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "478884688898-69rvj8rcuaf2pb777nnbvjochod59ptv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

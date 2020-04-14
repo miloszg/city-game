@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CityGame</string>
+    <string name="title_activity_foto">FotoActivity</string>
+    <string name="r_dmie_cie">Śródmieście</string>
+    <string name="o_owianka">Ołowianka</string>
+    <string name="wyspa_spichrz_w">Wyspa Spichrzów</string>
+    <string name="wybierz_gr">Wybierz grę</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+</resources>
