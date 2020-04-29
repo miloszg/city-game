@@ -1,7 +1,9 @@
 package com.example.citygame.Map;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,20 +16,32 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.viewpager.widget.ViewPager;
 
+import com.example.citygame.BuildConfig;
+import com.example.citygame.Gallery.GalleryProvider;
+import com.example.citygame.ImageAdapter;
+import com.example.citygame.MainActivity;
 import com.example.citygame.MarkersList.Marker;
 import com.example.citygame.MarkersList.MarkerListActivity;
 import com.example.citygame.R;
@@ -46,7 +60,12 @@ import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -61,6 +80,16 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
     private ImageButton buttonZoom;
     private ImageButton buttonZoomOut;
     private double zoom = 14.5;
+    private GalleryProvider gallery;
+    private ImageView galleryImageView;
+    private Button addPhotoBtn;
+    private Button showImagesBtn;
+    private int GALLERY = 1, CAMERA = 2;
+    private static final String IMAGE_DIRECTORY = "/city_game";
+    private static final int CAMERA_REQUEST_CODE = 100;
+    private ImageAdapter adapter;
+    private File imgFile;
+    private Uri imgUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +184,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                 marker.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_action_location, null));
                 marker.setPosition(position);
                 marker.setAnchor(org.osmdroid.views.overlay.Marker.ANCHOR_CENTER, org.osmdroid.views.overlay.Marker.ANCHOR_BOTTOM);
+                //marker.setOnMarkerClickListener();
                 mapView.getOverlays().add(marker);
                 i++;
             }
@@ -166,6 +196,163 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
         mapView.getOverlays().add(mCompassOverlay);
         mapView.getOverlays().add(scaleBarOverlay);
         mapView.getOverlayManager().add(polygon);
+
+        addPhotoBtn = findViewById(R.id.selectPhoto);
+        //gallery = new GalleryProvider(MapActivity.this);
+
+        addPhotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkSelfPermission(Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.CAMERA},
+                            CAMERA_REQUEST_CODE);
+                }
+                showPictureDialog();
+            }
+        });
+
+        showImagesBtn = findViewById(R.id.showImages);
+
+        showImagesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter = new ImageAdapter(MapActivity.this);
+                setContentView(R.layout.activity_gallery);
+                ViewPager viewPager = findViewById(R.id.viewPager);
+                viewPager.setAdapter(adapter);
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Camera permission granted.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Camera permission denied.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == this.RESULT_CANCELED) {
+            return;
+        }
+        if (requestCode == GALLERY) {
+            if (data != null) {
+                Uri contentURI = data.getData();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    String path = saveImage(bitmap, imgFile);
+                    Toast.makeText(MapActivity.this, "Dodano zdjęcie", Toast.LENGTH_SHORT).show();
+                    //galleryImageView.setImageBitmap(bitmap);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(MapActivity.this, "Błąd zapisu zdjęcia", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        } else if (requestCode == CAMERA) {
+            if(data != null) {
+                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                //galleryImageView.setImageBitmap(thumbnail);
+                saveImage(thumbnail, imgFile);
+                Toast.makeText(MapActivity.this, "Dodano zdjęcie!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MapActivity.this, "Nie udało się zapisać zdjęcia.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public File createImageFile() {
+        File imgDirectory = new File(Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
+
+        if (!imgDirectory.exists()) {
+            imgDirectory.mkdirs();
+        }
+
+        try{
+            File f = new File(imgDirectory, Calendar.getInstance().getTimeInMillis() + ".jpg");
+            f.createNewFile();
+            imgUri = Uri.fromFile(f);
+
+            return f;
+        } catch (IOException exp){
+            Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show();
+            exp.printStackTrace();
+        }
+        return null;
+    }
+
+    public String saveImage(Bitmap myBitmap, File imageFile) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        //File imgDirectory = new File(Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
+
+        //if (!imgDirectory.exists()) {
+        //  imgDirectory.mkdirs();
+        //}
+
+        try {
+            FileOutputStream fo = new FileOutputStream(imageFile);
+            fo.write(bytes.toByteArray());
+            MediaScannerConnection.scanFile(this,
+                    new String[]{imageFile.getPath()},
+                    new String[]{"image/jpeg"}, null);
+            fo.close();
+            //Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
+
+            return imageFile.getAbsolutePath();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return "";
+    }
+
+    public void showPictureDialog(){
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        pictureDialog.setTitle("Select Action");
+        String[] pictureDialogItems = {
+                "Select photo from gallery",
+                "Capture photo from camera" };
+        pictureDialog.setItems(pictureDialogItems,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                choosePhotoFromGallary();
+                                break;
+                            case 1:
+                                takePhotoFromCamera();
+                                break;
+                        }
+                    }
+                });
+        pictureDialog.show();
+    }
+
+    public void choosePhotoFromGallary() {
+        imgFile = createImageFile();
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, GALLERY);
+    }
+
+    private void takePhotoFromCamera() {
+        imgFile = createImageFile();
+        Uri photoURI = FileProvider.getUriForFile(this,
+                BuildConfig.APPLICATION_ID + ".provider",
+                imgFile);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+        startActivityForResult(intent, 1);
     }
 
     private void centerMap() {
