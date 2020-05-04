@@ -1,5 +1,6 @@
 package com.example.citygame;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 
     RESTHandler restHandler = new RESTHandler();
 
+    @SuppressLint("NewApi")
     class NetTask extends AsyncTask<String, Integer, String> {
 
         String response;
