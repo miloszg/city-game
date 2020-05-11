@@ -7,7 +7,6 @@ import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -37,7 +36,7 @@ public class RESTHandler {
     }
 
 
-    private Settings settings = new Settings();
+    private URLs URLs = new URLs();
 
 
     public String loginUser (String username, String password) {
@@ -45,7 +44,7 @@ public class RESTHandler {
         // return Token
 
         try{
-            URL Endpoint = new URL(settings.getServerURLregistration());
+            URL Endpoint = new URL(URLs.getServerURLlogin());
             HttpURLConnection myConnection =
                     (HttpURLConnection) Endpoint.openConnection();
 
@@ -107,7 +106,7 @@ public class RESTHandler {
         // return Token
 
         try {
-            URL Endpoint = new URL(settings.getServerURLregistration());
+            URL Endpoint = new URL(URLs.getServerURLregistration());
             HttpURLConnection myConnection =
                     (HttpURLConnection) Endpoint.openConnection();
 
@@ -169,7 +168,7 @@ public class RESTHandler {
 
     public List<NameAndIdScenario> getNameAndIdScenarios () {
 
-        String scenariosURL = settings.getServerURLlist();
+        String scenariosURL = URLs.getServerURLlist();
         List<NameAndIdScenario> scenarios = new ArrayList<>();
 
         try{
@@ -208,7 +207,7 @@ public class RESTHandler {
 
     public Scenario getScenario (String id) {
 
-        String scenariosURL = settings.getServerURLscenarios() + id + "/";
+        String scenariosURL = URLs.getServerURLscenarios() + id + "/";
         Scenario scenario = new Scenario();
 
         try{
