@@ -1,8 +1,9 @@
 package com.example.citygame;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 
     RESTHandler restHandler = new RESTHandler();
 
+    @SuppressLint("NewApi")
     class NetTask extends AsyncTask<String, Integer, String> {
 
         String response;
@@ -66,7 +68,8 @@ public class LoginActivity extends AppCompatActivity {
     private static final String KEY_LOGIN = "Login";
     private static final String KEY_PASS = "Haslo";
 
-    private Button button;
+    private Button buttonLogin;
+    private Button buttonForgotPassword;
     private EditText loginEditText;
     private EditText passwordEditText;
 
@@ -83,11 +86,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        button = findViewById(R.id.LogButton);
+        buttonLogin = findViewById(R.id.LogButton);
+        buttonForgotPassword = findViewById(R.id.ForgotPasswordButton);
         loginEditText = findViewById(R.id.LoginEditText);
         passwordEditText = findViewById(R.id.PasswordEditText);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String login = loginEditText.getText().toString();
@@ -101,6 +105,13 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         restHandler.get_token().revoke();
+
+        buttonForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openForgotPasswordActivity();
+            }
+        });
     }
     public void openMenuActivity() {
         Intent menu = new Intent(this, MenuActivity.class);
@@ -164,5 +175,9 @@ public class LoginActivity extends AppCompatActivity {
     void loginUser(String username, String password){
         NetTask task = new NetTask();
         task.execute(username, password);
+    }
+    public void openForgotPasswordActivity() {
+        Intent forgotPasswordActivity = new Intent(this,ForgotPasswordActivity.class);
+        startActivity(forgotPasswordActivity);
     }
 }

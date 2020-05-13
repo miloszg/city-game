@@ -1,7 +1,9 @@
 package com.example.citygame;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+
 import java.io.IOException;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -20,35 +24,9 @@ import okhttp3.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    RESTHandler restHandler = new RESTHandler();
 
-    class NetTask extends AsyncTask<String, Integer, String> {
-
-        String response;
-        String username;
-        String password;
-
-        protected void onPreExecute() {
-            // Start your progress bar...
-        }
-
-        protected String doInBackground(String... params) {
-
-                username = params[0];
-                password = params[1];
-                try{
-                    response = restHandler.registerUser(username, password);
-                } catch (NullPointerException e){
-                    System.out.println("NUll response");
-                }
-            return null;
-        }
-
-        protected void onPostExecute(String result) {
-
-        }
-    }
-
+    private RegistrationHandler handler;
+    private String registrationURLPoint = "";
     private static final String TAG = "RegisterActivity";
 
     public static final MediaType JSON
@@ -64,9 +42,8 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageButton goToMenu;
     private ProgressBar progressBar;
 
-    private String LOGIN = " ";
-    private String PASS = " ";
-    private String EMAIL = " ";
+    @SuppressLint("RestrictedApi")
+    private User newUser = new User();
 
     private int PASSWORD_MIN = 5;
     private int LOGIN_MIN = 5;
@@ -94,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
         goToMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openMenuActivity();
+                startMenuActivity();
             }
         });
 }
@@ -112,16 +89,25 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void register(View v){
-        LOGIN = loginEditText.getText().toString();
-        PASS = passwordEditText.getText().toString();
-        EMAIL = emailEditText.getText().toString();
+        newUser.setLogin(loginEditText.getText().toString());
+        newUser.setPassword(passwordEditText.getText().toString());
+        newUser.setEmail(emailEditText.getText().toString());
+        String[] credentialsArray = new String[]{newUser.getPassword(), newUser.getEmail(), newUser.getLogin()};
         String passCheck = passwordCheckEditText.getText().toString();
-        
 
-        if (isValidPassword(PASS, passCheck)) {
-            if (isValidEmail(EMAIL)) {
-                if(isValidLogin(LOGIN)) {
-                    registerUser(LOGIN, PASS);
+        if (isValidPassword(newUser.getPassword(), passCheck)) {
+            if (isValidEmail(newUser.getEmail())) {
+                if(isValidLogin(newUser.getLogin())) {
+                    new RegistrationHandler(new RegistrationHandler.RegistrationHandlerFinishedListener() {
+                        @Override
+                        public void onFinished(Boolean resultIsOk) {
+                            if (resultIsOk) {
+                                startMenuActivity();
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "Rejestracja niepomyslna", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }).execute(credentialsArray);
                 }
                 else {
                     Toast.makeText(RegisterActivity.this, "Niepoprawny login", Toast.LENGTH_SHORT).show();
@@ -136,35 +122,13 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    String post(String url, String json) throws IOException {
-        RequestBody body = RequestBody.create(json, JSON);
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
-        try {
-            Response response = client.newCall(request).execute();
-            return response.body().string();
-        } catch (IOException e){
-            throw e;
-        }
-    }
 
-    String createJson(String Login, String Password, String Email) {
-        return "{'UserName':'"+ Login +"',"
-                + "'Email':'" + Email +"',"
-                + "'PasswordHash':'" + Password +"'}";
-    }
-
-    public void openMenuActivity() {
+    public void startMenuActivity() {
         Intent menu = new Intent(this, MenuActivity.class);
         startActivity(menu);
     }
 
-    void registerUser(String username, String password){
-        NetTask task = new NetTask();
-        task.execute(username, password);
-    }
+
 
 
 }
