@@ -78,8 +78,8 @@ public class ImageAdapter extends PagerAdapter {
         ImageView imageView = item.findViewById(R.id.photo);
         imageView.setImageBitmap(getPhoto(position));
 
-        TextView txt = item.findViewById(R.id.description);
-        txt.setText("Jakiś opis..." + String.valueOf(position));
+        TextView txt = item.findViewById(R.id.questionCtn);
+        txt.setText("bjbvkkj");
         container.addView(item);
         return item;
     }

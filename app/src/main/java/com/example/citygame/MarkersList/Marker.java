@@ -1,9 +1,12 @@
 package com.example.citygame.MarkersList;
 
+import com.example.citygame.QuestionModel;
+
 public class Marker {
     public String lat;
     public String lon;
     public String title;
+    public QuestionModel question;
 
     public Marker(String lat, String lon, String title) {
         this.lat = lat;
@@ -33,5 +36,9 @@ public class Marker {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setQuestion(QuestionModel question) {
+        this.question = question;
     }
 }

@@ -15,12 +15,20 @@
         android:contentDescription="@string/photo" />
 
     <TextView
-        android:id="@+id/description"
+        android:id="@+id/questionCtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/description" />
+        android:text="" />
+    <TextView
+        android:id="@+id/questionAns"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="16dp"
+        android:text="" />
 
 </LinearLayout>

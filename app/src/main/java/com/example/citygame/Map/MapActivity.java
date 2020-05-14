@@ -26,6 +26,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ import com.example.citygame.Gallery.ImageAdapter;
 import com.example.citygame.MarkerDialog;
 import com.example.citygame.MarkersList.Marker;
 import com.example.citygame.MarkersList.MarkerListActivity;
+import com.example.citygame.QuestionModel;
 import com.example.citygame.R;
 
 import org.osmdroid.api.IMapController;
@@ -169,6 +172,11 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
         polygon.getFillPaint().setColor(Color.parseColor("#1EFFE70E"));
         polygon.setTitle("Scieżka Gdańsk City Game");
 
+        mapView.getOverlays().add(locationOverlay);
+        mapView.getOverlays().add(mCompassOverlay);
+        mapView.getOverlays().add(scaleBarOverlay);
+        mapView.getOverlayManager().add(polygon);
+
         int i=1;
         //if(extraString=="1") {
             for (Marker m : MarkerListActivity.list) {
@@ -200,10 +208,6 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
         polygon.setPoints(geoPoints);
 
         //Adding overlays to mapView
-        mapView.getOverlays().add(locationOverlay);
-        mapView.getOverlays().add(mCompassOverlay);
-        mapView.getOverlays().add(scaleBarOverlay);
-        mapView.getOverlayManager().add(polygon);
 
         /*addPhotoBtn = findViewById(R.id.selectPhoto);
         //gallery = new GalleryProvider(MapActivity.this);
@@ -229,12 +233,12 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                 setContentView(R.layout.activity_gallery);
                 ViewPager viewPager = findViewById(R.id.viewPager);
                 viewPager.setAdapter(adapter);
-                viewPager.setPageTransformer(true, new RotateUpTransformer());
+                viewPager.setPageTransformer(true, new RotateUpTransfoFrmer());
             }
         });*/
     }
 
-    public void openDialog(Marker marker){
+    public void openDialog(final Marker marker){
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
 
         LayoutInflater layoutInflater = this.getLayoutInflater();
@@ -254,8 +258,100 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
             }
         });
 
+        Button questionBtn = view.findViewById(R.id.btnQuestion);
+        questionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                showQuestionDialog(marker.question);
+            }
+        });
+
         pictureDialog.setView(view);
         pictureDialog.show();
+    }
+
+    public void showQuestionDialog(final QuestionModel question){
+        AlertDialog.Builder questionDialog = new AlertDialog.Builder(this);
+
+        LayoutInflater layoutInflater = this.getLayoutInflater();
+        final View view = layoutInflater.inflate(R.layout.question_window, null);
+
+        final RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.myRadioGroup);
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.silent) {
+                    Toast.makeText(getApplicationContext(), "choice: Silent",
+                            Toast.LENGTH_SHORT).show();
+                } else if(checkedId == R.id.sound) {
+                    Toast.makeText(getApplicationContext(), "choice: Sound",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "choice: Vibration",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        if(question != null) {
+            final RadioButton ansA = (RadioButton) view.findViewById(R.id.sound);
+            ansA.setText(question.answers.get(0));
+            final RadioButton ansB = (RadioButton) view.findViewById(R.id.vibration);
+            ansB.setText(question.answers.get(1));
+            final RadioButton ansC = (RadioButton) view.findViewById(R.id.silent);
+            ansC.setText(question.answers.get(2));
+            TextView questionContent = (TextView) view.findViewById(R.id.text);
+            questionContent.setText(question.content);
+            final TextView questionResult = (TextView) view.findViewById(R.id.result);
+
+            Button btnQuestionConfirm = (Button) view.findViewById(R.id.chooseBtn);
+            btnQuestionConfirm.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    int selectedId = radioGroup.getCheckedRadioButtonId();
+                    String result;
+                    // find which radioButton is checked by id
+                    if (selectedId == ansA.getId()) {
+                        if (ansA.getText().toString() == question.correctAnswer) {
+                            result = "Prawidłowa odpowiedź!";
+                            questionResult.setTextColor(Color.parseColor("#294E2B"));
+                        } else {
+                            result = "Zła odpowiedź :(";
+                            questionResult.setTextColor(Color.RED);
+                        }
+                        //.setText("You chose 'Sound' option");
+                    } else if (selectedId == ansB.getId()) {
+                        if (ansB.getText().toString() == question.correctAnswer) {
+                            result = "Prawidłowa odpowiedź!";
+                            questionResult.setTextColor(Color.parseColor("#294E2B"));
+                        } else {
+                            result = "Zła odpowiedź :(";
+                            questionResult.setTextColor(Color.RED);
+                        }
+                        //textView.setText("You chose 'Vibration' option");
+                    } else {
+                        if (ansC.getText().toString() == question.correctAnswer) {
+                            result = "Prawidłowa odpowiedź!";
+                            questionResult.setTextColor(Color.parseColor("#294E2B"));
+                        } else {
+                            result = "Zła odpowiedź :(";
+                            questionResult.setTextColor(Color.RED);
+                        }
+                        //textView.setText("You chose 'Silent' option");
+                    }
+
+                    questionResult.setText(result);
+                    //TODO
+                    //plus 1 pkt za dobrą odp
+                }
+            });
+        }
+        questionDialog.setView(view);
+        questionDialog.show();
     }
 
     @Override

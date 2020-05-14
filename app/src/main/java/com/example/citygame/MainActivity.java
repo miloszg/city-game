@@ -14,6 +14,9 @@ import android.widget.Toast;
 import com.example.citygame.MarkersList.Marker;
 import com.example.citygame.MarkersList.MarkerListActivity;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     @Override
@@ -54,6 +57,21 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         Marker soldek = new Marker("54.351434", "18.658640","Soldek");
         Marker mariacka = new Marker("54.351434", "18.658640","Ulica Mariacka");
         Marker bazylika = new Marker("54.349941", "18.653961","Bazylika Mariacka");
+
+        QuestionModel scandicQ = new QuestionModel("Jaką nazwę nosi instytucja mieszcząca się w budynku-muzeum\n" +
+                "wzniesionym tuż obok dla upamiętnienia walki z totalitaryzmem?\n",
+                "Europejskie Centrum Solidarności",
+                Arrays.asList("Europejskie Centrum Solidarności", "B", "C"));
+        QuestionModel oldQ = new QuestionModel("Ile kosztuje bilet wstępu na wystawę?",
+                "6 zł",
+                Arrays.asList("100 zł", "6 zł", "30 zł"));
+        QuestionModel heweliuszQ = new QuestionModel("Kiedy zbudowano Zbrojownię?",
+                "1602 – 1605",
+                Arrays.asList("1902 – 1905","2008", "1602 – 1605"));
+
+        scandic.setQuestion(scandicQ);
+        oldTownHall.setQuestion(oldQ);
+        heweliusz.setQuestion(heweliuszQ);
 
         MarkerListActivity.list.add(scandic);
         MarkerListActivity.list.add(oldTownHall);
