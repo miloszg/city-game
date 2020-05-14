@@ -8,10 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,6 +21,7 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -38,21 +36,20 @@ import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
 import com.example.citygame.BuildConfig;
 import com.example.citygame.Gallery.GalleryProvider;
-import com.example.citygame.ImageAdapter;
-import com.example.citygame.MainActivity;
+import com.example.citygame.Gallery.ImageAdapter;
+import com.example.citygame.MarkerDialog;
 import com.example.citygame.MarkersList.Marker;
 import com.example.citygame.MarkersList.MarkerListActivity;
 import com.example.citygame.R;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
-import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Polygon;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
@@ -70,6 +67,7 @@ import java.util.List;
 
 
 public class MapActivity extends AppCompatActivity implements LocationListener {
+    public Context mapContext;
     private static final String TAG = "MapActivity";
     IMapController mapController;
     public static MapView mapView;
@@ -80,19 +78,16 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
     private ImageButton buttonZoom;
     private ImageButton buttonZoomOut;
     private double zoom = 14.5;
-    private GalleryProvider gallery;
-    private ImageView galleryImageView;
-    private Button addPhotoBtn;
-    private Button showImagesBtn;
     private int GALLERY = 1, CAMERA = 2;
     private static final String IMAGE_DIRECTORY = "/city_game";
     private static final int CAMERA_REQUEST_CODE = 100;
     private ImageAdapter adapter;
     private File imgFile;
-    private Uri imgUri;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mapContext = MapActivity.this;
         super.onCreate(savedInstanceState);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
@@ -177,6 +172,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
         int i=1;
         //if(extraString=="1") {
             for (Marker m : MarkerListActivity.list) {
+                final Marker mInfo = m;
                 org.osmdroid.views.overlay.Marker marker = new org.osmdroid.views.overlay.Marker(mapView);
                 GeoPoint position = new GeoPoint(Float.valueOf(m.getLat()), Float.valueOf(m.getLon()));
                 geoPoints.add(position);
@@ -184,10 +180,22 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                 marker.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_action_location, null));
                 marker.setPosition(position);
                 marker.setAnchor(org.osmdroid.views.overlay.Marker.ANCHOR_CENTER, org.osmdroid.views.overlay.Marker.ANCHOR_BOTTOM);
-                //marker.setOnMarkerClickListener();
+                marker.setOnMarkerClickListener(new org.osmdroid.views.overlay.Marker.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(org.osmdroid.views.overlay.Marker marker, MapView mapView) {
+                        if (checkSelfPermission(Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(new String[]{Manifest.permission.CAMERA},
+                                    CAMERA_REQUEST_CODE);
+                        }
+                        openDialog(mInfo);
+                        return true;
+                    }
+                });
                 mapView.getOverlays().add(marker);
                 i++;
             }
+        //}
         //}
         polygon.setPoints(geoPoints);
 
@@ -197,7 +205,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
         mapView.getOverlays().add(scaleBarOverlay);
         mapView.getOverlayManager().add(polygon);
 
-        addPhotoBtn = findViewById(R.id.selectPhoto);
+        /*addPhotoBtn = findViewById(R.id.selectPhoto);
         //gallery = new GalleryProvider(MapActivity.this);
 
         addPhotoBtn.setOnClickListener(new View.OnClickListener() {
@@ -210,9 +218,9 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                 }
                 showPictureDialog();
             }
-        });
+        });*/
 
-        showImagesBtn = findViewById(R.id.showImages);
+        /*showImagesBtn = findViewById(R.id.showImages);
 
         showImagesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,8 +229,33 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                 setContentView(R.layout.activity_gallery);
                 ViewPager viewPager = findViewById(R.id.viewPager);
                 viewPager.setAdapter(adapter);
+                viewPager.setPageTransformer(true, new RotateUpTransformer());
+            }
+        });*/
+    }
+
+    public void openDialog(Marker marker){
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+
+        LayoutInflater layoutInflater = this.getLayoutInflater();
+        final View view = layoutInflater.inflate(R.layout.info_window, null);
+
+        TextView txtName = (TextView) view.findViewById(R.id.name);
+        txtName.setText(marker.getTitle());
+
+        ImageButton selectPhoto = (ImageButton) view.findViewById(R.id.addPhotoBtn);
+        selectPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                if(mapContext != null) {
+                    showPictureDialog();
+                }
             }
         });
+
+        pictureDialog.setView(view);
+        pictureDialog.show();
     }
 
     @Override
@@ -265,7 +298,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                 saveImage(thumbnail, imgFile);
                 Toast.makeText(MapActivity.this, "Dodano zdjęcie!", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(MapActivity.this, "Nie udało się zapisać zdjęcia.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MapActivity.this, "Nie udało się zapisać zdjęcia.", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -280,8 +313,6 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
         try{
             File f = new File(imgDirectory, Calendar.getInstance().getTimeInMillis() + ".jpg");
             f.createNewFile();
-            imgUri = Uri.fromFile(f);
-
             return f;
         } catch (IOException exp){
             Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show();
@@ -293,11 +324,6 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
     public String saveImage(Bitmap myBitmap, File imageFile) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        //File imgDirectory = new File(Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
-
-        //if (!imgDirectory.exists()) {
-        //  imgDirectory.mkdirs();
-        //}
 
         try {
             FileOutputStream fo = new FileOutputStream(imageFile);
@@ -306,7 +332,6 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                     new String[]{imageFile.getPath()},
                     new String[]{"image/jpeg"}, null);
             fo.close();
-            //Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
 
             return imageFile.getAbsolutePath();
         } catch (IOException e1) {
@@ -317,10 +342,10 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
     public void showPictureDialog(){
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
-        pictureDialog.setTitle("Select Action");
+        //pictureDialog.setTitle("Select Action");
         String[] pictureDialogItems = {
-                "Select photo from gallery",
-                "Capture photo from camera" };
+                "Wybierz zdjęcie z galerii",
+                "Zrób zdjęcie" };
         pictureDialog.setItems(pictureDialogItems,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -351,8 +376,9 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                 BuildConfig.APPLICATION_ID + ".provider",
                 imgFile);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, CAMERA);
     }
 
     private void centerMap() {

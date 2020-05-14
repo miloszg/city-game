@@ -50,22 +50,4 @@
             android:layout_alignStart="@+id/ic_map_add"
             android:layout_marginTop="10dp" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/selectPhoto"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Add photo" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/showImages"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="100dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Gallery" />
-
 </RelativeLayout>

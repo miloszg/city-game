@@ -11,10 +11,15 @@ import android.provider.MediaStore;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.example.citygame.Gallery.ImageAdapter;
+import com.example.citygame.Map.MapActivity;
 
 public class PresentationActivity extends AppCompatActivity {
 
@@ -27,23 +32,27 @@ public class PresentationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_presentation);
+        //setContentView(R.layout.activity_presentation);
+        ImageAdapter adapter = new ImageAdapter(this);
+        setContentView(R.layout.activity_gallery);
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        viewPager.setAdapter(adapter);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST);
         }
 
-        displayImage = findViewById(R.id.displayImage);
-        loadButton = findViewById(R.id.loadButton);
+        //displayImage = findViewById(R.id.displayImage);
+        //loadButton = findViewById(R.id.loadButton);
 
-        loadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+        //loadButton.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+         //   public void onClick(View v) {
+        //       Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+         //       startActivityForResult(i, RESULT_LOAD_IMAGE);
 
-            }
-        });
+         //   }
+        //});
     }
 
     @Override
@@ -51,7 +60,7 @@ public class PresentationActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    @Override
+  /*  @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
             case RESULT_LOAD_IMAGE:
@@ -66,5 +75,5 @@ public class PresentationActivity extends AppCompatActivity {
                     displayImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
                 }
         }
-    }
+    }*/
 }

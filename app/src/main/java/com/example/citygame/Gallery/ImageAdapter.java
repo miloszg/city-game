@@ -1,4 +1,4 @@
-package com.example.citygame;
+package com.example.citygame.Gallery;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,11 +13,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.example.citygame.R;
+
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ImageAdapter extends PagerAdapter {
     private Context mContext;
-    private int[] imageIds = new int[20]; //TODO
+    private List<Integer> imageIds = new ArrayList<Integer>();
     private LayoutInflater inflater;
     private int countOfPhotos = 0;
 
@@ -31,7 +35,7 @@ public class ImageAdapter extends PagerAdapter {
         File files[] = f.listFiles();
 
         for (int i = 0; i< files.length; i++) {
-            imageIds[i] = i;
+            imageIds.add(i);
             countOfPhotos++;
             //Bitmap myBitmap = BitmapFactory.decodeFile(files[i].getAbsolutePath());
         }
