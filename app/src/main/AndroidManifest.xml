@@ -2,6 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.citygame">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -23,14 +33,16 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".GameInfoActivity"></activity>
-
+        <activity android:name=".GameInfoActivity" />
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/network_security_config" />
         <activity android:name=".GameActivity" />
         <activity android:name=".ProfileActivity" />
+        <activity android:name=".Gallery.GalleryProvider" />
         <activity android:name=".ForgotPasswordActivity" />
         <activity android:name=".RegistrationHandler"/>
         <activity android:name=".ForgotPasswordHandler" />
@@ -56,12 +68,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MenuActivity"
+        <activity
+            android:name=".MenuActivity"
             android:theme="@style/AppTheme.GrayActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.citygame.fileprovider"
+            android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
