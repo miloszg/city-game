@@ -86,6 +86,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
     private static final int CAMERA_REQUEST_CODE = 100;
     private ImageAdapter adapter;
     private File imgFile;
+    private Integer currentIdMarket;
 
 
     @Override
@@ -196,6 +197,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                             requestPermissions(new String[]{Manifest.permission.CAMERA},
                                     CAMERA_REQUEST_CODE);
                         }
+                        currentIdMarket = mInfo.id;
                         openDialog(mInfo);
                         return true;
                     }
@@ -407,7 +409,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
         }
 
         try{
-            File f = new File(imgDirectory, Calendar.getInstance().getTimeInMillis() + ".jpg");
+            File f = new File(imgDirectory, Calendar.getInstance().getTimeInMillis() + "_" + currentIdMarket.toString() +".jpg");
             f.createNewFile();
             return f;
         } catch (IOException exp){

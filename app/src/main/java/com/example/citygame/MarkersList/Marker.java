@@ -3,12 +3,14 @@ package com.example.citygame.MarkersList;
 import com.example.citygame.QuestionModel;
 
 public class Marker {
+    public Integer id;
     public String lat;
     public String lon;
     public String title;
     public QuestionModel question;
 
-    public Marker(String lat, String lon, String title) {
+    public Marker(Integer id, String lat, String lon, String title) {
+        this.id = id;
         this.lat = lat;
         this.lon = lon;
         this.title = title;
