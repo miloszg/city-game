@@ -58,20 +58,48 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         Marker mariacka = new Marker("54.351434", "18.658640","Ulica Mariacka");
         Marker bazylika = new Marker("54.349941", "18.653961","Bazylika Mariacka");
 
-        QuestionModel scandicQ = new QuestionModel("Jaką nazwę nosi instytucja mieszcząca się w budynku-muzeum\n" +
+        QuestionModel placsolidarnosciQ = new QuestionModel("Jaką nazwę nosi instytucja mieszcząca się w budynku-muzeum" +
                 "wzniesionym tuż obok dla upamiętnienia walki z totalitaryzmem?\n",
                 "Europejskie Centrum Solidarności",
                 Arrays.asList("Europejskie Centrum Solidarności", "B", "C"));
-        QuestionModel oldQ = new QuestionModel("Ile kosztuje bilet wstępu na wystawę?",
+        QuestionModel wystawadrogadowolnosciQ = new QuestionModel("Ile kosztuje bilet wstępu na wystawę?",
                 "6 zł",
                 Arrays.asList("100 zł", "6 zł", "30 zł"));
-        QuestionModel heweliuszQ = new QuestionModel("Kiedy zbudowano Zbrojownię?",
+        QuestionModel arsenalQ = new QuestionModel("Kiedy zbudowano Zbrojownię?",
                 "1602 – 1605",
                 Arrays.asList("1902 – 1905","2008", "1602 – 1605"));
 
-        scandic.setQuestion(scandicQ);
-        oldTownHall.setQuestion(oldQ);
-        heweliusz.setQuestion(heweliuszQ);
+        QuestionModel goledQ = new QuestionModel("Ile figur- posągów alegorycznych stoi dumnie na szczycie bramy?",
+                "8 (po 4 z każdej strony)",
+                Arrays.asList("8 (po 4 z każdej strony)", "10", "1"));
+        QuestionModel bazyQ = new QuestionModel("Czy bazylika może pomieścić do 25 tysięcy osób?",
+                "Prawda",
+                Arrays.asList("Prawda", "Fałsz", ""));
+        QuestionModel mariackaQ = new QuestionModel("Czy znajdują się tu sklepy z srebrem i bursztynem?",
+                "Tak",
+                Arrays.asList("Tak", "Nie", ""));
+        QuestionModel craneQ = new QuestionModel("Jaki ptak znajduje się na szczycie budynku ?",
+                "Żuraw",
+                Arrays.asList("Czapla", "Bocian", "Żuraw"));
+        QuestionModel soldekQ = new QuestionModel("Czy istnieje połączenie promem przez Motławę między Żurawiem a statkiem-muzeum “Sołdek” ?",
+                "Tak",
+                Arrays.asList("Tak", "Nie", ""));
+        QuestionModel neptunQ = new QuestionModel("Jak się nazywa grecki bóg odpowiednik Neptuna?",
+                "Posejdon",
+                Arrays.asList("Zeus", "Apollo", "Posejdon"));
+        QuestionModel uphagenQ = new QuestionModel("Gdzie mieści się kamienica?",
+                "Dom Uphagena,\n" +
+                        "Oddział Muzeum Historycznego Miasta Gdańska, ul. Długa 12, Gdańsk",
+                Arrays.asList("Oddział Muzeum Historycznego Miasta Gdańska, ul. Długa 30, Gdańsk", "Oddział Muzeum Historycznego Miasta Gdańska, ul. Długa 12, Gdańsk", "Oddział Muzeum Historycznego Miasta Gdańska, ul. Krótka 12, Gdańsk"));
+
+
+        neptun.setQuestion(neptunQ);
+        soldek.setQuestion(soldekQ);
+        crane.setQuestion(craneQ);
+        mariacka.setQuestion(mariackaQ);
+        bazylika.setQuestion(bazyQ);
+        arsenal.setQuestion(arsenalQ);
+        goldenGate.setQuestion(goledQ);
 
         MarkerListActivity.list.add(scandic);
         MarkerListActivity.list.add(oldTownHall);
