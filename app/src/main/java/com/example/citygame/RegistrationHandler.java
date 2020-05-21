@@ -1,7 +1,4 @@
 package com.example.citygame;
-
-import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 
 import org.json.JSONException;
@@ -15,8 +12,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+
 
 public class RegistrationHandler extends AsyncTask<String, Void, Boolean> {
 
@@ -36,7 +32,6 @@ public class RegistrationHandler extends AsyncTask<String, Void, Boolean> {
         try {
             URL url = new URL(urlPost.getServerURLregistration());
             DataOutputStream outputStream;
-            DataInputStream inputStream;
             connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
             connection.setDoOutput(true);
@@ -84,7 +79,6 @@ public class RegistrationHandler extends AsyncTask<String, Void, Boolean> {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return false;
@@ -94,7 +88,6 @@ public class RegistrationHandler extends AsyncTask<String, Void, Boolean> {
     protected void onPreExecute() {
         super.onPreExecute();
     }
-
 
     @Override
     protected void onProgressUpdate(Void... values) {

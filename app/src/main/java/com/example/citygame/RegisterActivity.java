@@ -24,16 +24,6 @@ import okhttp3.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
-
-    private RegistrationHandler handler;
-    private String registrationURLPoint = "";
-    private static final String TAG = "RegisterActivity";
-
-    public static final MediaType JSON
-            = MediaType.get("application/json; charset=utf-8");
-
-    OkHttpClient client = new OkHttpClient();
-
     private EditText loginEditText;
     private EditText passwordEditText;
     private EditText passwordCheckEditText;
@@ -67,14 +57,13 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-
         goToMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startMenuActivity();
             }
         });
-}
+    }
 
     public boolean isValidPassword(String pass, String secPass){
         return pass.equals(secPass) && pass.length() > PASSWORD_MIN ;
@@ -122,13 +111,9 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-
     public void startMenuActivity() {
         Intent menu = new Intent(this, MenuActivity.class);
         startActivity(menu);
     }
-
-
-
 
 }
