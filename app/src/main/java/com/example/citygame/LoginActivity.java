@@ -13,12 +13,12 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private User user = new User();
-
     private Button buttonLogin;
     private Button buttonForgotPassword;
     private EditText emailEditText;
     private EditText passwordEditText;
+    private String password;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +46,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View v) {
-        user.setPassword(passwordEditText.getText().toString());
-        user.setEmail(emailEditText.getText().toString());
-        String[] credentialsArray = new String[]{user.getPassword(), user.getEmail()};
+        password = passwordEditText.getText().toString();
+        email = emailEditText.getText().toString();
+        String[] credentialsArray = new String[]{password, email};
 
         new LoginHandler(new LoginHandler.LoginHandlerFinishedListener() {
 
             @Override
             public void onFinished(Boolean resultIsOk) {
                 if (resultIsOk) {
+                    User.instanceInitializerLogin(email, password);
                     startMenuActivity();
                 } else {
                     Toast.makeText(LoginActivity.this, "Logowanie niepomyslne", Toast.LENGTH_SHORT).show();
