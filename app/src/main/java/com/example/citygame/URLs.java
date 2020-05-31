@@ -2,33 +2,32 @@ package com.example.citygame;
 
 public class URLs {
 
-    public URLs() {
-    }
-
     private String serverURLregistration = "http://35.214.223.15:3000/api/v1/registration";
     private String serverURLpasswordReset = "http://35.214.223.15:3000/api/v1/password_reset";
     private String serverURLlogin = "http://35.214.223.15:3000/api/v1/login"; //?password=";
     private String serverURLscenarios = "";
     private String serverURLlist = "";
 
+    public URLs() {
+    }
 
-    public String getServerURLregistration() {
+    public String getServerURLRegistration() {
         return serverURLregistration;
     }
 
-    public String getServerURLpasswordReset() {
+    public String getServerURLPasswordReset() {
         return serverURLpasswordReset;
     }
 
-    public String getServerURLlogin() {
+    public String getServerURLLogin() {
         return serverURLlogin;
     }
 
-    public String getServerURLscenarios() {
+    public String getServerURLScenarios() {
         return serverURLscenarios;
     }
 
-    public String getServerURLlist() {
+    public String getServerURLList() {
         return serverURLlist;
     }
 }

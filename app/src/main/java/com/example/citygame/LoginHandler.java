@@ -2,11 +2,7 @@ package com.example.citygame;
 
 import android.os.AsyncTask;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -28,31 +24,16 @@ public class LoginHandler extends AsyncTask<String, Void, Boolean> {
         HttpURLConnection connection = null;
         StringBuilder stringBuilder = new StringBuilder();
         try {
-            String urlAppended = new StringBuilder(urlGet.getServerURLlogin()).append("?password=").append(strings[0]).append("&email=").append(strings[1]).toString();
+            String urlAppended = new StringBuilder(urlGet.getServerURLLogin()).append("?password=").append(strings[0]).append("&email=").append(strings[1]).toString();
             URL url = new URL(urlAppended);
-/*            URL url = new URL(urlGet.getServerURLlogin());*//*
-            DataOutputStream outputStream;*/
             connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
-/*            connection.setDoOutput(true);*/
             connection.setRequestMethod("GET");
             connection.setUseCaches(false);
             connection.setConnectTimeout(10000);
             connection.setReadTimeout(10000);
             connection.setRequestProperty("Content-Type", "application/json");
-/*            connection.setRequestProperty("Accept", "application/json");*/
             connection.connect();
-
-/*            // create JSONObject here
-            JSONObject jsonParam = new JSONObject();
-            jsonParam.put("password", strings[0]);
-            jsonParam.put("email", strings[1]);
-
-            // obtain GET output
-            outputStream = new DataOutputStream(connection.getOutputStream());
-            outputStream.writeBytes(jsonParam.toString());
-            outputStream.flush();
-            outputStream.close();*/
 
             int httpResult = connection.getResponseCode();
 
@@ -77,9 +58,7 @@ public class LoginHandler extends AsyncTask<String, Void, Boolean> {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } /*catch (JSONException e) {
-            e.printStackTrace();
-        }*/
+        }
         return false;
     }
 

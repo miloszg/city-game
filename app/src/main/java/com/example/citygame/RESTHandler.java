@@ -44,7 +44,7 @@ public class RESTHandler {
         // return Token
 
         try{
-            URL Endpoint = new URL(URLs.getServerURLlogin());
+            URL Endpoint = new URL(URLs.getServerURLLogin());
             HttpURLConnection myConnection =
                     (HttpURLConnection) Endpoint.openConnection();
 
@@ -106,7 +106,7 @@ public class RESTHandler {
         // return Token
 
         try {
-            URL Endpoint = new URL(URLs.getServerURLregistration());
+            URL Endpoint = new URL(URLs.getServerURLRegistration());
             HttpURLConnection myConnection =
                     (HttpURLConnection) Endpoint.openConnection();
 
@@ -168,7 +168,7 @@ public class RESTHandler {
 
     public List<NameAndIdScenario> getNameAndIdScenarios () {
 
-        String scenariosURL = URLs.getServerURLlist();
+        String scenariosURL = URLs.getServerURLList();
         List<NameAndIdScenario> scenarios = new ArrayList<>();
 
         try{
@@ -207,7 +207,7 @@ public class RESTHandler {
 
     public Scenario getScenario (String id) {
 
-        String scenariosURL = URLs.getServerURLscenarios() + id + "/";
+        String scenariosURL = URLs.getServerURLScenarios() + id + "/";
         Scenario scenario = new Scenario();
 
         try{

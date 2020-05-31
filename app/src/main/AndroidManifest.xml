@@ -32,9 +32,11 @@
         <activity android:name=".GameActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".ForgotPasswordActivity" />
-        <activity android:name=".RegistrationHandler"/>
+        <activity android:name=".RegisterHandler"/>
         <activity android:name=".ForgotPasswordHandler" />
         <activity android:name=".LoginHandler" />
+        <activity android:name=".ForgotPasswordTokenActivity" />
+        <activity android:name=".ForgotPasswordTokenHandler" />
         <activity android:name=".User"/>
         <activity android:name=".URLs" />
         <activity

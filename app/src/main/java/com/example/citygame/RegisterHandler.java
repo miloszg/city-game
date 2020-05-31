@@ -5,7 +5,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,15 +13,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 
-public class RegistrationHandler extends AsyncTask<String, Void, Boolean> {
+public class RegisterHandler extends AsyncTask<String, Void, Boolean> {
 
     private URLs urlPost = new URLs();
     private RegistrationHandlerFinishedListener listener;
 
-    public RegistrationHandler(RegistrationHandlerFinishedListener listener) {
+    public RegisterHandler(RegistrationHandlerFinishedListener listener) {
         this.listener = listener;
     }
-
 
     @Override
     protected Boolean doInBackground(String... strings) {
@@ -30,7 +28,7 @@ public class RegistrationHandler extends AsyncTask<String, Void, Boolean> {
         HttpURLConnection connection = null;
         StringBuilder stringBuilder = new StringBuilder();
         try {
-            URL url = new URL(urlPost.getServerURLregistration());
+            URL url = new URL(urlPost.getServerURLRegistration());
             DataOutputStream outputStream;
             connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);

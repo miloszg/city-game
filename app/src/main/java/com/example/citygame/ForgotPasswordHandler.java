@@ -24,7 +24,7 @@ public class ForgotPasswordHandler extends AsyncTask<String, Void, Boolean> {
         HttpURLConnection connection = null;
         StringBuilder stringBuilder = new StringBuilder();
         try {
-            String urlAppended = new StringBuilder(urlGet.getServerURLpasswordReset()).append("?email=").append(strings[0]).toString();
+            String urlAppended = new StringBuilder(urlGet.getServerURLPasswordReset()).append("?email=").append(strings[0]).toString();
             URL url = new URL(urlAppended);
             connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
@@ -47,7 +47,6 @@ public class ForgotPasswordHandler extends AsyncTask<String, Void, Boolean> {
                 }
 
                 bufferedReader.close();
-
                 System.out.println(("" + stringBuilder.toString()));
                 return true;
             } else {

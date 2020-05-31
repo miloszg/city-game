@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
-
     private Button buttonRequest;
     private EditText emailEditText;
     private String email;
@@ -19,7 +18,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_forgot_password);
 
         buttonRequest = findViewById(R.id.RequestButton);
         emailEditText = findViewById(R.id.EmailEditText);

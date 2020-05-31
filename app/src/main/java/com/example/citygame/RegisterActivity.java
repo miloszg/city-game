@@ -78,7 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (isValidPassword(password, passCheck)) {
             if (isValidEmail(email)) {
                 if(isValidLogin(login)) {
-                    new RegistrationHandler(new RegistrationHandler.RegistrationHandlerFinishedListener() {
+                    new RegisterHandler(new RegisterHandler.RegistrationHandlerFinishedListener() {
                         @Override
                         public void onFinished(Boolean resultIsOk) {
                             if (resultIsOk) {
