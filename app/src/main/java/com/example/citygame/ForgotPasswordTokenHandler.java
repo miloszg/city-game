@@ -1,42 +1,34 @@
 package com.example.citygame;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
-public class RegistrationHandler extends AsyncTask<String, Void, Boolean> {
+public class ForgotPasswordTokenHandler extends AsyncTask<String, Void, Boolean> {
 
     private URLs urlPost = new URLs();
-    private RegistrationHandlerFinishedListener listener;
+    private ForgotPasswordTokenHandler.ForgotPasswordTokenHandlerFinishedListener listener;
 
-    public RegistrationHandler(RegistrationHandlerFinishedListener listener) {
+    public ForgotPasswordTokenHandler(ForgotPasswordTokenHandler.ForgotPasswordTokenHandlerFinishedListener listener) {
         this.listener = listener;
     }
 
-
     @Override
     protected Boolean doInBackground(String... strings) {
-
         HttpURLConnection connection = null;
         StringBuilder stringBuilder = new StringBuilder();
         try {
-            URL url = new URL(urlPost.getServerURLregistration());
+            URL url = new URL(urlPost.getServerURLPasswordReset());
             DataOutputStream outputStream;
-            DataInputStream inputStream;
             connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
             connection.setDoOutput(true);
@@ -48,13 +40,10 @@ public class RegistrationHandler extends AsyncTask<String, Void, Boolean> {
             connection.setRequestProperty("Accept", "application/json");
             connection.connect();
 
-            // create JSONObject here
             JSONObject jsonParam = new JSONObject();
-            jsonParam.put("password", strings[0]);
-            jsonParam.put("email", strings[1]);
-            jsonParam.put("name", strings[2]);
+            jsonParam.put("token", strings[0]);
+            jsonParam.put("password", strings[1]);
 
-            // send POST output
             outputStream = new DataOutputStream(connection.getOutputStream());
             outputStream.writeBytes(jsonParam.toString());
             outputStream.flush();
@@ -84,7 +73,6 @@ public class RegistrationHandler extends AsyncTask<String, Void, Boolean> {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return false;
@@ -94,7 +82,6 @@ public class RegistrationHandler extends AsyncTask<String, Void, Boolean> {
     protected void onPreExecute() {
         super.onPreExecute();
     }
-
 
     @Override
     protected void onProgressUpdate(Void... values) {
@@ -107,10 +94,7 @@ public class RegistrationHandler extends AsyncTask<String, Void, Boolean> {
         this.listener.onFinished(result);
     }
 
-    public interface RegistrationHandlerFinishedListener {
+    public interface ForgotPasswordTokenHandlerFinishedListener {
         void onFinished(Boolean result);
-
     }
-
-
 }

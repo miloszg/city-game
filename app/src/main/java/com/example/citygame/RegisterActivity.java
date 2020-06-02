@@ -1,7 +1,6 @@
 package com.example.citygame;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,28 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-
-import java.io.IOException;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
 public class RegisterActivity extends AppCompatActivity {
-
-
-    private RegistrationHandler handler;
-    private String registrationURLPoint = "";
-    private static final String TAG = "RegisterActivity";
-
-    public static final MediaType JSON
-            = MediaType.get("application/json; charset=utf-8");
-
-    OkHttpClient client = new OkHttpClient();
 
     private EditText loginEditText;
     private EditText passwordEditText;
@@ -40,10 +20,11 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText emailEditText;
     private Button RegisterButton;
     private ImageButton goToMenu;
-    private ProgressBar progressBar;
+    private String login;
+    private String password;
+    private String email;
 
     @SuppressLint("RestrictedApi")
-    private User newUser = new User();
 
     private int PASSWORD_MIN = 5;
     private int LOGIN_MIN = 5;
@@ -67,14 +48,13 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-
         goToMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startMenuActivity();
             }
         });
-}
+    }
 
     public boolean isValidPassword(String pass, String secPass){
         return pass.equals(secPass) && pass.length() > PASSWORD_MIN ;
@@ -89,19 +69,20 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void register(View v){
-        newUser.setLogin(loginEditText.getText().toString());
-        newUser.setPassword(passwordEditText.getText().toString());
-        newUser.setEmail(emailEditText.getText().toString());
-        String[] credentialsArray = new String[]{newUser.getPassword(), newUser.getEmail(), newUser.getLogin()};
+        login = loginEditText.getText().toString();
+        password = passwordEditText.getText().toString();
+        email = emailEditText.getText().toString();
+        String[] credentialsArray = new String[]{password, email, login};
         String passCheck = passwordCheckEditText.getText().toString();
 
-        if (isValidPassword(newUser.getPassword(), passCheck)) {
-            if (isValidEmail(newUser.getEmail())) {
-                if(isValidLogin(newUser.getLogin())) {
-                    new RegistrationHandler(new RegistrationHandler.RegistrationHandlerFinishedListener() {
+        if (isValidPassword(password, passCheck)) {
+            if (isValidEmail(email)) {
+                if(isValidLogin(login)) {
+                    new RegisterHandler(new RegisterHandler.RegistrationHandlerFinishedListener() {
                         @Override
                         public void onFinished(Boolean resultIsOk) {
                             if (resultIsOk) {
+                                User.instanceInitializerRegistration(login, email, password);
                                 startMenuActivity();
                             } else {
                                 Toast.makeText(RegisterActivity.this, "Rejestracja niepomyslna", Toast.LENGTH_SHORT).show();
@@ -122,13 +103,9 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-
     public void startMenuActivity() {
         Intent menu = new Intent(this, MenuActivity.class);
         startActivity(menu);
     }
-
-
-
 
 }

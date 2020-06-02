@@ -4,21 +4,35 @@ public class User {
     private String login;
     private String email;
     private String password;
+    private static User user;
 
-    public User() {
+    private User() {
     }
 
-
-    public void setLogin(String name) {
-        this.login = name;
+    public static void instanceInitializerRegistration(String login, String email, String password) {
+        user = new User();
+        user.login = login;
+        user.email = email;
+        user.password = password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public static void instanceInitializerLogin(String email, String password) {
+        user = new User();
+        user.email = email;
+        user.password = password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public static void instanceInitializerForgotPassword(String email) {
+        user = new User();
+        user.email = email;
+    }
+
+    public static void instanceDestroyer() {
+        User.user = null;
+    }
+
+    public static User getInstance() {
+        return user;
     }
 
     public String getLogin() {
