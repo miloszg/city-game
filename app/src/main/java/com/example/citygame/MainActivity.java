@@ -65,19 +65,19 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         QuestionModel wystawadrogadowolnosciQ = new QuestionModel("Ile kosztuje bilet wstępu na wystawę?",
                 "6 zł",
                 Arrays.asList("100 zł", "6 zł", "30 zł"));
-        QuestionModel arsenalQ = new QuestionModel("Kiedy zbudowano Zbrojownię?",
+        QuestionModel arsenalQ = new QuestionModel("Kiedy została zbudowana Zbrojownia?",
                 "1602 – 1605",
                 Arrays.asList("1902 – 1905","2008", "1602 – 1605"));
 
         QuestionModel goledQ = new QuestionModel("Ile figur- posągów alegorycznych stoi dumnie na szczycie bramy?",
                 "8 (po 4 z każdej strony)",
-                Arrays.asList("8 (po 4 z każdej strony)", "10", "1"));
+                Arrays.asList("8 (po 4 z każdej strony)", "10 (po 5 z każdej strony)", "1"));
         QuestionModel bazyQ = new QuestionModel("Czy bazylika może pomieścić do 25 tysięcy osób?",
                 "Prawda",
-                Arrays.asList("Prawda", "Fałsz", ""));
+                Arrays.asList("Prawda", "Fałsz"));
         QuestionModel mariackaQ = new QuestionModel("Czy znajdują się tu sklepy z srebrem i bursztynem?",
                 "Tak",
-                Arrays.asList("Tak", "Nie", ""));
+                Arrays.asList("Tak", "Nie"));
         QuestionModel craneQ = new QuestionModel("Jaki ptak znajduje się na szczycie budynku ?",
                 "Żuraw",
                 Arrays.asList("Czapla", "Bocian", "Żuraw"));
@@ -92,6 +92,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                         "Oddział Muzeum Historycznego Miasta Gdańska, ul. Długa 12, Gdańsk",
                 Arrays.asList("Oddział Muzeum Historycznego Miasta Gdańska, ul. Długa 30, Gdańsk", "Oddział Muzeum Historycznego Miasta Gdańska, ul. Długa 12, Gdańsk", "Oddział Muzeum Historycznego Miasta Gdańska, ul. Krótka 12, Gdańsk"));
 
+        QuestionModel hotelScandicQ = new QuestionModel("Ile gwiazdek ma Hotel Scandic?", "4", Arrays.asList("5", "4", "3"));
+        QuestionModel oldTownCityHallQ = new QuestionModel("Jaki słynny astronom pracował w Ratuszu?","Jan Heweliusz", Arrays.asList("Jan Heweliusz", "Mikołaj Kopernik", "Isaac Newton", "Galileusz"));
+        QuestionModel statueOfJHeweliuszQ = new QuestionModel("Czy Heweliusz żył w XVII wieku?", "Tak", Arrays.asList("Tak", "Nie"));
+        QuestionModel cityMarketQ = new QuestionModel("Jaki znak widnieje nad bramą rynku miejskiego?", "Herb Gdański", Arrays.asList("Lwy Gdańskie","Miecz i tarcza", "Herb Gdański"));
+        QuestionModel cityHallQ = new QuestionModel("W jakim stylu został zbudowany Ratusz?", "Gotyckim", Arrays.asList("Romański", "Gotycki", "Neogotycki"));
+        QuestionModel greenGateQ = new QuestionModel("Jaki były prezydent RP posiadał biuro w Zielonej Bramie?", "Lech Wałęsa", Arrays.asList("Aleksander Kwaśniewski", "Lech Wałęsa", "Bronisław Komorowski"));
+
 
         neptun.setQuestion(neptunQ);
         soldek.setQuestion(soldekQ);
@@ -100,6 +107,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         bazylika.setQuestion(bazyQ);
         arsenal.setQuestion(arsenalQ);
         goldenGate.setQuestion(goledQ);
+        scandic.setQuestion(hotelScandicQ);
+        oldTownHall.setQuestion(oldTownCityHallQ);
+        heweliusz.setQuestion(statueOfJHeweliuszQ);
+        market.setQuestion(cityMarketQ);
+        townHall.setQuestion(cityHallQ);
+        greenGate.setQuestion(greenGateQ);
 
         MarkerListActivity.list.add(scandic);
         MarkerListActivity.list.add(oldTownHall);

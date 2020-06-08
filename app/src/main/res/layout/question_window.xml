@@ -23,22 +23,20 @@
         android:id="@+id/myRadioGroup">
 
         <RadioButton
+            android:id="@+id/qA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/sound"
+            android:buttonTint="#BA3A11"
+            android:checked="false"
             android:text="ans1" />
 
         <RadioButton
+            android:id="@+id/qB"
+            style="@android:style/Widget.DeviceDefault.CompoundButton.RadioButton"
             android:layout_width="wrap_content"
+            android:buttonTint="#BA3A11"
             android:layout_height="wrap_content"
-            android:id="@+id/vibration"
             android:text="ans2" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/silent"
-            android:text="ans3" />
 
     </RadioGroup>
 

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -192,8 +193,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                 marker.setOnMarkerClickListener(new org.osmdroid.views.overlay.Marker.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(org.osmdroid.views.overlay.Marker marker, MapView mapView) {
-                        if (checkSelfPermission(Manifest.permission.CAMERA)
-                                != PackageManager.PERMISSION_GRANTED) {
+                        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                             requestPermissions(new String[]{Manifest.permission.CAMERA},
                                     CAMERA_REQUEST_CODE);
                         }
@@ -255,6 +255,14 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
             public void onClick(View view)
             {
                 if(mapContext != null) {
+                    if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.CAMERA},
+                                CAMERA_REQUEST_CODE);
+                    }
+                    if (ActivityCompat.checkSelfPermission(mapContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(mapContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(MapActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                    }
                     showPictureDialog();
                 }
             }
@@ -285,26 +293,38 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId == R.id.silent) {
-                    Toast.makeText(getApplicationContext(), "choice: Silent",
-                            Toast.LENGTH_SHORT).show();
-                } else if(checkedId == R.id.sound) {
-                    Toast.makeText(getApplicationContext(), "choice: Sound",
-                            Toast.LENGTH_SHORT).show();
+                if(checkedId == R.id.qA) {
+                } else if(checkedId == R.id.qB) {
                 } else {
-                    Toast.makeText(getApplicationContext(), "choice: Vibration",
-                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         if(question != null) {
-            final RadioButton ansA = (RadioButton) view.findViewById(R.id.sound);
+            final RadioButton qC = new RadioButton(getApplicationContext());
+            if(question.answers.size() == 3){
+                qC.setText(question.answers.get(2));
+
+                ColorStateList colorStateList = new ColorStateList(
+                        new int[][]{
+                                new int[]{-android.R.attr.state_enabled},
+                                new int[]{android.R.attr.state_enabled}
+                        },
+                        new int[] {
+                                Color.BLACK
+                                ,Color.parseColor("#BA3A11")
+                        }
+                );
+
+                qC.setButtonTintList(colorStateList);
+                radioGroup.addView(qC);
+            }
+            final RadioButton ansA = (RadioButton) view.findViewById(R.id.qA);
             ansA.setText(question.answers.get(0));
-            final RadioButton ansB = (RadioButton) view.findViewById(R.id.vibration);
+            final RadioButton ansB = (RadioButton) view.findViewById(R.id.qB);
             ansB.setText(question.answers.get(1));
-            final RadioButton ansC = (RadioButton) view.findViewById(R.id.silent);
-            ansC.setText(question.answers.get(2));
+            //final RadioButton ansC = (RadioButton) view.findViewById(R.id.qC);
+            //ansC.setText(question.answers.get(2));
             TextView questionContent = (TextView) view.findViewById(R.id.text);
             questionContent.setText(question.content);
             final TextView questionResult = (TextView) view.findViewById(R.id.result);
@@ -336,7 +356,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                         }
                         //textView.setText("You chose 'Vibration' option");
                     } else {
-                        if (ansC.getText().toString() == question.correctAnswer) {
+                        if (qC.getText().toString() == question.correctAnswer) {
                             result = "Prawidłowa odpowiedź!";
                             questionResult.setTextColor(Color.parseColor("#294E2B"));
                         } else {
@@ -361,9 +381,9 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CAMERA_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Camera permission granted.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Wyrażona zgoda na dostęp.", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(this, "Camera permission denied.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Zabroniony dostęp.", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -439,26 +459,28 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
     }
 
     public void showPictureDialog(){
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
-        //pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {
-                "Wybierz zdjęcie z galerii",
-                "Zrób zdjęcie" };
-        pictureDialog.setItems(pictureDialogItems,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                choosePhotoFromGallary();
-                                break;
-                            case 1:
-                                takePhotoFromCamera();
-                                break;
+        if(PackageManager.PERMISSION_GRANTED == checkSelfPermission(Manifest.permission.CAMERA)) {
+            AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+            //pictureDialog.setTitle("Select Action");
+            String[] pictureDialogItems = {
+                    "Wybierz zdjęcie z galerii",
+                    "Zrób zdjęcie"};
+            pictureDialog.setItems(pictureDialogItems,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case 0:
+                                    choosePhotoFromGallary();
+                                    break;
+                                case 1:
+                                    takePhotoFromCamera();
+                                    break;
+                            }
                         }
-                    }
-                });
-        pictureDialog.show();
+                    });
+            pictureDialog.show();
+        }
     }
 
     public void choosePhotoFromGallary() {

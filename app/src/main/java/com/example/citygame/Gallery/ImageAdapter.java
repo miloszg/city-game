@@ -80,6 +80,12 @@ public class ImageAdapter extends PagerAdapter {
                     "Oddział Muzeum Historycznego Miasta Gdańska, ul. Długa 12, Gdańsk",
             Arrays.asList("Oddział Muzeum Historycznego Miasta Gdańska, ul. Długa 30, Gdańsk", "Oddział Muzeum Historycznego Miasta Gdańska, ul. Długa 12, Gdańsk", "Oddział Muzeum Historycznego Miasta Gdańska, ul. Krótka 12, Gdańsk"));
 
+    QuestionModel hotelScandicQ = new QuestionModel("Ile gwiazdek ma Hotel Scandic?", "4", Arrays.asList("5", "4", "3"));
+    QuestionModel oldTownCityHallQ = new QuestionModel("Jaki słynny astronom pracował w Ratuszu?","Jan Heweliusz", Arrays.asList("Jan Heweliusz", "Mikołaj Kopernik", "Isaac Newton", "Galileusz"));
+    QuestionModel statueOfJHeweliuszQ = new QuestionModel("Czy Heweliusz żył w XVII wieku?", "Tak", Arrays.asList("Tak", "Nie"));
+    QuestionModel cityMarketQ = new QuestionModel("Jaki znak widnieje nad bramą rynku miejskiego?", "Herb Gdański", Arrays.asList("Lwy Gdańskie","Miecz i tarcza", "Herb Gdański"));
+    QuestionModel cityHallQ = new QuestionModel("W jakim stylu został zbudowany Ratusz?", "Gotyckim", Arrays.asList("Romański", "Gotycki", "Neogotycki"));
+    QuestionModel greenGateQ = new QuestionModel("Jaki były prezydent RP posiadał biuro w Zielonej Bramie?", "Lech Wałęsa", Arrays.asList("Aleksander Kwaśniewski", "Lech Wałęsa", "Bronisław Komorowski"));
 
     public ImageAdapter(Context context){
         this.mContext = context;
@@ -90,6 +96,12 @@ public class ImageAdapter extends PagerAdapter {
         bazylika.setQuestion(bazyQ);
         arsenal.setQuestion(arsenalQ);
         goldenGate.setQuestion(goledQ);
+        oldTownHall.setQuestion(oldTownCityHallQ);
+        heweliusz.setQuestion(statueOfJHeweliuszQ);
+        market.setQuestion(cityMarketQ);
+        townHall.setQuestion(cityHallQ);
+        greenGate.setQuestion(greenGateQ);
+        scandic.setQuestion(hotelScandicQ);
 
         markers.add(scandic);
         markers.add(neptun);
@@ -99,6 +111,11 @@ public class ImageAdapter extends PagerAdapter {
         markers.add(bazylika);
         markers.add(arsenal);
         markers.add(goldenGate);
+        markers.add(oldTownHall);
+        markers.add(heweliusz);
+        markers.add(market);
+        markers.add(townHall);
+        markers.add(greenGate);
         getCountPhotos();
     }
 
@@ -106,10 +123,12 @@ public class ImageAdapter extends PagerAdapter {
         File f = new File(Environment.getExternalStorageDirectory() + "/city_game");
         File files[] = f.listFiles();
 
-        for (int i = 0; i< files.length; i++) {
-            imageIds.add(i);
-            countOfPhotos++;
-            //Bitmap myBitmap = BitmapFactory.decodeFile(files[i].getAbsolutePath());
+        if(files != null) {
+            for (int i = 0; i < files.length; i++) {
+                imageIds.add(i);
+                countOfPhotos++;
+                //Bitmap myBitmap = BitmapFactory.decodeFile(files[i].getAbsolutePath());
+            }
         }
     }
 
@@ -177,8 +196,7 @@ public class ImageAdapter extends PagerAdapter {
     }
 
     public Marker searchMarkerById(Integer id){
-        for (Marker m:
-             markers) {
+        for (Marker m: markers) {
             if(m.id == id){
                 return m;
             }
