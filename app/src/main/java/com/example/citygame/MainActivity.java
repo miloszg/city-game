@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         Marker greenGate = new Marker(9,"54.348012", "18.655741","Zielona Brama");
         Marker crane = new Marker(10,"54.350573", "18.657599","Żuraw");
         Marker soldek = new Marker(11,"54.351434", "18.658640","Soldek");
-        Marker mariacka = new Marker(12,"54.351434", "18.658640","Ulica Mariacka");
+        Marker mariacka = new Marker(12,"54.349698", "18.655406","Ulica Mariacka");
         Marker bazylika = new Marker(13,"54.349941", "18.653961","Bazylika Mariacka");
 
         QuestionModel placsolidarnosciQ = new QuestionModel("Jaką nazwę nosi instytucja mieszcząca się w budynku-muzeum" +
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 Arrays.asList("Czapla", "Bocian", "Żuraw"));
         QuestionModel soldekQ = new QuestionModel("Czy istnieje połączenie promem przez Motławę między Żurawiem a statkiem-muzeum “Sołdek” ?",
                 "Tak",
-                Arrays.asList("Tak", "Nie", ""));
+                Arrays.asList("Tak", "Nie"));
         QuestionModel neptunQ = new QuestionModel("Jak się nazywa grecki bóg odpowiednik Neptuna?",
                 "Posejdon",
                 Arrays.asList("Zeus", "Apollo", "Posejdon"));

@@ -38,9 +38,11 @@ public class RouteListActivity extends AppCompatActivity {
 
         RouteListAdapter adapter = new RouteListAdapter(this, R.layout.custom_view_layout,routeList);
         routerList.setAdapter(adapter);
-        ArrayList<Marker> routeArray = new ArrayList<>();
-        RouteApp route = new RouteApp("Gdańsk City Game", MarkerListActivity.list,R.drawable.ic_game);
-        routeList.add(route);
+
+        if(routeList.isEmpty()) {
+            RouteApp route = new RouteApp("Gdańsk City Game", MarkerListActivity.list, R.drawable.ic_game);
+            routeList.add(route);
+        }
 
         routerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
