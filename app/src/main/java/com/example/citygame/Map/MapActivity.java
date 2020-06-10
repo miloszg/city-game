@@ -88,7 +88,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
     private ImageAdapter adapter;
     private File imgFile;
     private Integer currentIdMarket;
-
+    private boolean isAnswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,6 +241,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
     }
 
     public void openDialog(final Marker marker){
+        isAnswer = false;
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
 
         LayoutInflater layoutInflater = this.getLayoutInflater();
@@ -249,7 +250,12 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
         TextView txtName = (TextView) view.findViewById(R.id.name);
         txtName.setText(marker.getTitle());
 
-        ImageButton selectPhoto = (ImageButton) view.findViewById(R.id.addPhotoBtn);
+        final ImageButton selectPhoto = (ImageButton) view.findViewById(R.id.addPhotoBtn);
+        if(!isAnswer) {
+            selectPhoto.setEnabled(false);
+        }else{
+            selectPhoto.setEnabled(true);
+        }
         selectPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -273,7 +279,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
             @Override
             public void onClick(View view)
             {
-                showQuestionDialog(marker.question);
+                showQuestionDialog(marker.question, selectPhoto);
             }
         });
 
@@ -281,7 +287,8 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
         pictureDialog.show();
     }
 
-    public void showQuestionDialog(final QuestionModel question){
+    public void showQuestionDialog(final QuestionModel question, ImageButton selectPhoto){
+        final ImageButton selectPhotoF = selectPhoto;
         AlertDialog.Builder questionDialog = new AlertDialog.Builder(this);
 
         LayoutInflater layoutInflater = this.getLayoutInflater();
@@ -334,6 +341,8 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
                 @Override
                 public void onClick(View v) {
+                    isAnswer = true;
+                    selectPhotoF.setEnabled(true);
                     int selectedId = radioGroup.getCheckedRadioButtonId();
                     String result;
                     // find which radioButton is checked by id
