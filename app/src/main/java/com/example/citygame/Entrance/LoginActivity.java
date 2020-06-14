@@ -1,8 +1,6 @@
-package com.example.citygame;
+package com.example.citygame.Entrance;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.AsyncTask;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.citygame.EntranceHandlers.LoginHandler;
+import com.example.citygame.MenuActivity;
+import com.example.citygame.R;
+import com.example.citygame.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -70,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void startMenuActivity() {
-        Intent menuActivity = new Intent(this,MenuActivity.class);
+        Intent menuActivity = new Intent(this, MenuActivity.class);
         startActivity(menuActivity);
     }
 }

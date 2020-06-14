@@ -1,4 +1,4 @@
-package com.example.citygame;
+package com.example.citygame.Entrance;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.citygame.EntranceHandlers.ForgotPasswordHandler;
+import com.example.citygame.MenuActivity;
+import com.example.citygame.R;
+import com.example.citygame.User;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
@@ -54,7 +59,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     public void startMenuActivity() {
-        Intent menuActivity = new Intent(this,MenuActivity.class);
+        Intent menuActivity = new Intent(this, MenuActivity.class);
         startActivity(menuActivity);
     }
 }

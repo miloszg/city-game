@@ -1,4 +1,4 @@
-package com.example.citygame;
+package com.example.citygame.Entrance;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,6 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.example.citygame.EntranceHandlers.RegisterHandler;
+import com.example.citygame.MenuActivity;
+import com.example.citygame.R;
+import com.example.citygame.User;
 
 public class RegisterActivity extends AppCompatActivity {
 

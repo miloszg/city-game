@@ -1,39 +1,59 @@
-package com.example.citygame;
-
+package com.example.citygame.EntranceHandlers;
 import android.os.AsyncTask;
 
+import com.example.citygame.URLs;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ForgotPasswordHandler extends AsyncTask<String, Void, Boolean> {
 
-    private URLs urlGet = new URLs();
-    private ForgotPasswordHandlerListener forgotPasswordInterface;
+public class RegisterHandler extends AsyncTask<String, Void, Boolean> {
 
+    private URLs urlPost = new URLs();
+    private RegistrationHandlerFinishedListener listener;
 
-    public ForgotPasswordHandler(ForgotPasswordHandlerListener forgotPasswordInterface) {
-        this.forgotPasswordInterface = forgotPasswordInterface;
+    public RegisterHandler(RegistrationHandlerFinishedListener listener) {
+        this.listener = listener;
     }
 
     @Override
     protected Boolean doInBackground(String... strings) {
+
         HttpURLConnection connection = null;
         StringBuilder stringBuilder = new StringBuilder();
         try {
-            String urlAppended = new StringBuilder(urlGet.getServerURLPasswordReset()).append("?email=").append(strings[0]).toString();
-            URL url = new URL(urlAppended);
+            URL url = new URL(urlPost.getServerURLRegistration());
+            DataOutputStream outputStream;
             connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
-            connection.setRequestMethod("GET");
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
             connection.setUseCaches(false);
             connection.setConnectTimeout(10000);
             connection.setReadTimeout(10000);
             connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
             connection.connect();
+
+            // create JSONObject here
+            JSONObject jsonParam = new JSONObject();
+            jsonParam.put("password", strings[0]);
+            jsonParam.put("email", strings[1]);
+            jsonParam.put("name", strings[2]);
+
+            // send POST output
+            outputStream = new DataOutputStream(connection.getOutputStream());
+            outputStream.writeBytes(jsonParam.toString());
+            outputStream.flush();
+            outputStream.close();
 
             int httpResult = connection.getResponseCode();
 
@@ -47,6 +67,7 @@ public class ForgotPasswordHandler extends AsyncTask<String, Void, Boolean> {
                 }
 
                 bufferedReader.close();
+
                 System.out.println(("" + stringBuilder.toString()));
                 return true;
             } else {
@@ -57,18 +78,32 @@ public class ForgotPasswordHandler extends AsyncTask<String, Void, Boolean> {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         return false;
     }
 
     @Override
-    protected void onPostExecute(Boolean result) {
-        if (this.forgotPasswordInterface == null) return;
-        this.forgotPasswordInterface.onFinished(result);
+    protected void onPreExecute() {
+        super.onPreExecute();
     }
 
-    public interface ForgotPasswordHandlerListener {
-        void onFinished(Boolean result);
+    @Override
+    protected void onProgressUpdate(Void... values) {
+        //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
     }
+
+    @Override
+    protected void onPostExecute(Boolean result) {
+        if (this.listener == null) return;
+        this.listener.onFinished(result);
+    }
+
+    public interface RegistrationHandlerFinishedListener {
+        void onFinished(Boolean result);
+
+    }
+
 
 }

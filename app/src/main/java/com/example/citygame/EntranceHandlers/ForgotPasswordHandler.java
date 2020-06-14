@@ -1,25 +1,24 @@
-package com.example.citygame;
+package com.example.citygame.EntranceHandlers;
 
 import android.os.AsyncTask;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.citygame.URLs;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ForgotPasswordTokenHandler extends AsyncTask<String, Void, Boolean> {
+public class ForgotPasswordHandler extends AsyncTask<String, Void, Boolean> {
 
-    private URLs urlPost = new URLs();
-    private ForgotPasswordTokenHandler.ForgotPasswordTokenHandlerFinishedListener listener;
+    private URLs urlGet = new URLs();
+    private ForgotPasswordHandlerListener forgotPasswordInterface;
 
-    public ForgotPasswordTokenHandler(ForgotPasswordTokenHandler.ForgotPasswordTokenHandlerFinishedListener listener) {
-        this.listener = listener;
+
+    public ForgotPasswordHandler(ForgotPasswordHandlerListener forgotPasswordInterface) {
+        this.forgotPasswordInterface = forgotPasswordInterface;
     }
 
     @Override
@@ -27,27 +26,16 @@ public class ForgotPasswordTokenHandler extends AsyncTask<String, Void, Boolean>
         HttpURLConnection connection = null;
         StringBuilder stringBuilder = new StringBuilder();
         try {
-            URL url = new URL(urlPost.getServerURLPasswordReset());
-            DataOutputStream outputStream;
+            String urlAppended = new StringBuilder(urlGet.getServerURLPasswordReset()).append("?email=").append(strings[0]).toString();
+            URL url = new URL(urlAppended);
             connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
-            connection.setDoOutput(true);
-            connection.setRequestMethod("POST");
+            connection.setRequestMethod("GET");
             connection.setUseCaches(false);
             connection.setConnectTimeout(10000);
             connection.setReadTimeout(10000);
             connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Accept", "application/json");
             connection.connect();
-
-            JSONObject jsonParam = new JSONObject();
-            jsonParam.put("token", strings[0]);
-            jsonParam.put("password", strings[1]);
-
-            outputStream = new DataOutputStream(connection.getOutputStream());
-            outputStream.writeBytes(jsonParam.toString());
-            outputStream.flush();
-            outputStream.close();
 
             int httpResult = connection.getResponseCode();
 
@@ -61,7 +49,6 @@ public class ForgotPasswordTokenHandler extends AsyncTask<String, Void, Boolean>
                 }
 
                 bufferedReader.close();
-
                 System.out.println(("" + stringBuilder.toString()));
                 return true;
             } else {
@@ -72,29 +59,18 @@ public class ForgotPasswordTokenHandler extends AsyncTask<String, Void, Boolean>
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
         return false;
     }
 
     @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
-
-    @Override
-    protected void onProgressUpdate(Void... values) {
-        //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-    }
-
-    @Override
     protected void onPostExecute(Boolean result) {
-        if (this.listener == null) return;
-        this.listener.onFinished(result);
+        if (this.forgotPasswordInterface == null) return;
+        this.forgotPasswordInterface.onFinished(result);
     }
 
-    public interface ForgotPasswordTokenHandlerFinishedListener {
+    public interface ForgotPasswordHandlerListener {
         void onFinished(Boolean result);
     }
+
 }
