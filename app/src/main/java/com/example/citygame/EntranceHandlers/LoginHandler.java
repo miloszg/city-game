@@ -39,7 +39,7 @@ public class LoginHandler extends AsyncTask<String, Void, Boolean> {
 
             int httpResult = connection.getResponseCode();
 
-            if (httpResult == HttpURLConnection.HTTP_OK) {
+            if (httpResult == HttpURLConnection.HTTP_OK || httpResult == HttpURLConnection.HTTP_CREATED || httpResult == HttpURLConnection.HTTP_ACCEPTED || httpResult == HttpURLConnection.HTTP_NO_CONTENT) {
 
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
                 String line = null;

@@ -52,12 +52,12 @@ public class RegisterHandler extends AsyncTask<String, Void, Boolean> {
             // send POST output
             outputStream = new DataOutputStream(connection.getOutputStream());
             outputStream.writeBytes(jsonParam.toString());
-            outputStream.flush();
-            outputStream.close();
+    /*        outputStream.flush();
+            outputStream.close();*/
 
             int httpResult = connection.getResponseCode();
 
-            if (httpResult == HttpURLConnection.HTTP_OK) {
+            if (httpResult == HttpURLConnection.HTTP_OK || httpResult == HttpURLConnection.HTTP_CREATED || httpResult == HttpURLConnection.HTTP_ACCEPTED || httpResult == HttpURLConnection.HTTP_NO_CONTENT) {
 
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
                 String line = null;
