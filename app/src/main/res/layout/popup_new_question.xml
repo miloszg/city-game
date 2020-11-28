@@ -3,4 +3,64 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/textViewNewScenario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="45px"
+        android:text="Dodawanie pytania i nazwy punktu." />
+
+    <TextView
+        android:id="@+id/textViewMarkerName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nazwa punktu:" />
+
+    <EditText
+        android:id="@+id/editTextMarkerName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textViewContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Treść pytania:" />
+
+    <EditText
+        android:id="@+id/editTextContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine" />
+
+
+    <TextView
+        android:id="@+id/textViewAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Odpowiedź:" />
+
+    <EditText
+        android:id="@+id/editTexAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/btnAddAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dodaj odpowiedź do pytania" />
+
+    <Button
+        android:id="@+id/btnAddQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dodaj stworzone pytanie" />
+
 </LinearLayout>

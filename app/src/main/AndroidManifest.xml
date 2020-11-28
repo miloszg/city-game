@@ -42,13 +42,14 @@
         <activity android:name=".GameActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".Gallery.GalleryProvider" />
+        <activity android:name=".GroupActivity"/>
         <activity android:name=".Entrance.ForgotPasswordActivity" />
         <activity android:name=".EntranceHandlers.RegisterHandler"/>
         <activity android:name=".EntranceHandlers.ForgotPasswordHandler" />
         <activity android:name=".EntranceHandlers.LoginHandler" />
         <activity android:name=".Entrance.ForgotPasswordTokenActivity" />
         <activity android:name=".EntranceHandlers.ForgotPasswordTokenHandler" />
-        <activity android:name=".User"/>
+        <activity android:name=".Models.User"/>
         <activity android:name=".URLs" />
         <activity
             android:name=".Map.MapActivity"/>

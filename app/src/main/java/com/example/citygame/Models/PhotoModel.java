@@ -1,4 +1,4 @@
-package com.example.citygame;
+package com.example.citygame.Models;
 
 public class PhotoModel {
     public Integer id;

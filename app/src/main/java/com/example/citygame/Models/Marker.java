@@ -1,4 +1,4 @@
-package com.example.citygame.MarkersList;
+package com.example.citygame.Models;
 
 import com.example.citygame.Models.QuestionModel;
 

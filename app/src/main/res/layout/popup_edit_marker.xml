@@ -3,4 +3,55 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/textViewEditScenario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="45px"
+        android:text="Edycja punktu tworzonej ścieżki." />
+
+    <TextView
+        android:id="@+id/textViewMarkerNameEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nazwa punktu:" />
+
+    <EditText
+        android:id="@+id/editTextMarkerNameEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textViewContentEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Treść pytania:" />
+
+    <EditText
+        android:id="@+id/editTextContentEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine" />
+
+    <TextView
+        android:id="@+id/textViewAnswerText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Odpowiedzi" />
+
+    <ListView
+        android:id="@+id/answersList"
+        android:layout_width="match_parent"
+        android:layout_height="247dp" />
+
+    <Button
+        android:id="@+id/btnEditMarker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edytuj punkt ścieżki" />
+
 </LinearLayout>

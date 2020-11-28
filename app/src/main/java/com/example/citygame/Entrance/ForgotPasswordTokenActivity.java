@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.citygame.EntranceHandlers.ForgotPasswordTokenHandler;
 import com.example.citygame.MainActivity;
 import com.example.citygame.R;
-import com.example.citygame.User;
+import com.example.citygame.Models.User;
 
 
 public class ForgotPasswordTokenActivity extends AppCompatActivity {

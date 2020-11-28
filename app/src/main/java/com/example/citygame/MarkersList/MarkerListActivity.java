@@ -1,7 +1,6 @@
 package com.example.citygame.MarkersList;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.citygame.Models.Marker;
 import com.example.citygame.R;
 
 import java.util.ArrayList;

@@ -12,9 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 
-import com.example.citygame.MainActivity;
 import com.example.citygame.Map.MapActivity;
-import com.example.citygame.MarkersList.Marker;
 import com.example.citygame.MarkersList.MarkerListActivity;
 import com.example.citygame.R;
 

@@ -108,7 +108,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
-                        android:text="Zobacz prezentację"
+                        android:text="Zobacz prezentacje"
                         android:textAlignment="center"
                         android:textColor="#ff6633"
                         android:textSize="14sp"
@@ -143,7 +143,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
-                        android:text="Przejrzyj profile"
+                        android:text="Dołącz do grupy"
                         android:textAlignment="center"
                         android:textColor="#ff6633"
                         android:textSize="14sp"
@@ -178,7 +178,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
-                        android:text="Dołącz do grupy"
+                        android:text="Stwórz własną ścieżkę"
                         android:textAlignment="center"
                         android:textColor="#ff6633"
                         android:textSize="14sp"

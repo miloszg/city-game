@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.citygame.Map.MapActivity;
+import com.example.citygame.Models.Scenario;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.citygame;
+package com.example.citygame.Models;
 
 import java.util.ArrayList;
 import java.util.List;

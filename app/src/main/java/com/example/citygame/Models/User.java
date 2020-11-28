@@ -1,4 +1,4 @@
-package com.example.citygame;
+package com.example.citygame.Models;
 
 public class User {
     private String login;

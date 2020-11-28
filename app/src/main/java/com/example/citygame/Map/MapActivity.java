@@ -26,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -37,16 +36,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.viewpager.widget.ViewPager;
 
-import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
 import com.example.citygame.BuildConfig;
-import com.example.citygame.Gallery.GalleryProvider;
 import com.example.citygame.Gallery.ImageAdapter;
-import com.example.citygame.MarkerDialog;
-import com.example.citygame.MarkersList.Marker;
+import com.example.citygame.Models.Marker;
 import com.example.citygame.MarkersList.MarkerListActivity;
-import com.example.citygame.QuestionModel;
+import com.example.citygame.Models.QuestionModel;
 import com.example.citygame.R;
 
 import org.osmdroid.api.IMapController;

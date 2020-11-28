@@ -51,7 +51,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
                 openProfileActivity();
                 break;
             case R.id.cardGroup:
-                Toast.makeText(this, "do zaimplementowania", Toast.LENGTH_SHORT).show();
+                openGroupActivity();
                 break;
             default:
                 break;
@@ -73,11 +73,10 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
         startActivity(chooseGame);
     }
 
-/*    public void openGroupActivity() {
+    public void openGroupActivity() {
         Intent group = new Intent(this, GroupActivity.class);
         startActivity(group);
     }
-*/
 
     @Override
     public void onBackPressed() {

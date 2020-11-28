@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.example.citygame.EntranceHandlers.LoginHandler;
 import com.example.citygame.MenuActivity;
 import com.example.citygame.R;
-import com.example.citygame.User;
+import com.example.citygame.Models.User;
 
 public class LoginActivity extends AppCompatActivity {
 

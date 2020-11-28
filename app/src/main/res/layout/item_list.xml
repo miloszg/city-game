@@ -3,4 +3,17 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/answerContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#EDF2F5"
+        android:textAlignment="center"
+        android:textSize="50px" />
+
+    <Button
+        android:id="@+id/btnDeleteAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Usuń odpowiedź" />
 </LinearLayout>

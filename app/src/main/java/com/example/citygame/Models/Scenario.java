@@ -1,4 +1,4 @@
-package com.example.citygame;
+package com.example.citygame.Models;
 
 import java.io.Serializable;
 import java.util.List;

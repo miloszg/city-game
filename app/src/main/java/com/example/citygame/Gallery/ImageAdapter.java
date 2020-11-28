@@ -13,9 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.example.citygame.MarkersList.Marker;
-import com.example.citygame.PhotoModel;
-import com.example.citygame.QuestionModel;
+import com.example.citygame.Models.Marker;
+import com.example.citygame.Models.PhotoModel;
+import com.example.citygame.Models.QuestionModel;
 import com.example.citygame.R;
 
 import java.io.File;

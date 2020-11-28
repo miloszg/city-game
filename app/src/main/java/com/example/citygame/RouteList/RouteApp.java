@@ -1,6 +1,6 @@
 package com.example.citygame.RouteList;
 
-import com.example.citygame.MarkersList.Marker;
+import com.example.citygame.Models.Marker;
 
 import java.util.ArrayList;
 

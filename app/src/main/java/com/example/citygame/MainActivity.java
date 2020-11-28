@@ -13,8 +13,9 @@ import android.widget.Toast;
 
 import com.example.citygame.Entrance.LoginActivity;
 import com.example.citygame.Entrance.RegisterActivity;
-import com.example.citygame.MarkersList.Marker;
+import com.example.citygame.Models.Marker;
 import com.example.citygame.MarkersList.MarkerListActivity;
+import com.example.citygame.Models.QuestionModel;
 
 import java.util.Arrays;
 
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                Intent login = new Intent(getApplicationContext(), MenuActivity.class);
                 startActivity(login);
             }
         });
