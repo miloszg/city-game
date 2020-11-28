@@ -1,6 +1,6 @@
 package com.example.citygame.MarkersList;
 
-import com.example.citygame.QuestionModel;
+import com.example.citygame.Models.QuestionModel;
 
 public class Marker {
     public Integer id;
