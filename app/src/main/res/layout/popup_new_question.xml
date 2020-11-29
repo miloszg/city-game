@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -44,6 +45,11 @@
         android:layout_height="wrap_content"
         android:text="Odpowiedź:" />
 
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
     <EditText
         android:id="@+id/editTexAnswer"
         android:layout_width="match_parent"
@@ -51,11 +57,20 @@
         android:ems="10"
         android:inputType="textPersonName" />
 
-    <Button
-        android:id="@+id/btnAddAnswer"
+        <ImageButton
+            android:id="@+id/btnAddAnswer"
+            android:layout_width="150px"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:srcCompat="@android:drawable/ic_input_add" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/answersListNew"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Dodaj odpowiedź do pytania" />
+        android:focusable="true"
+        android:layout_height="247dp" />
 
     <Button
         android:id="@+id/btnAddQuestion"
