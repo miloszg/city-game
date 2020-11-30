@@ -1,87 +1,43 @@
 package com.example.citygame.EntranceHandlers;
 import android.os.AsyncTask;
 
-import com.example.citygame.URLs;
+import com.example.citygame.api.client.ApiClient;
+import com.example.citygame.api.client.EmailTakenException;
+import com.example.citygame.api.client.GenericApiException;
+import com.example.citygame.api.client.UserRegistrationFailedException;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 
-public class RegisterHandler extends AsyncTask<String, Void, Boolean> {
+public class RegisterHandler extends AsyncTask<Void, Void, RegisterHandlerResult> {
 
-    private URLs urlPost = new URLs();
+    private String userName, email, password;
     private RegistrationHandlerFinishedListener listener;
 
-    public RegisterHandler(RegistrationHandlerFinishedListener listener) {
+    public RegisterHandler(RegistrationHandlerFinishedListener listener,
+                           String userName,
+                           String email,
+                           String password) {
         this.listener = listener;
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
     }
 
     @Override
-    protected Boolean doInBackground(String... strings) {
+    protected RegisterHandlerResult doInBackground(Void... voids) {
 
-        HttpURLConnection connection = null;
-        StringBuilder stringBuilder = new StringBuilder();
+        ApiClient apiClient = new ApiClient();
         try {
-            URL url = new URL(urlPost.getServerURLRegistration());
-            DataOutputStream outputStream;
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-            connection.setRequestMethod("POST");
-            connection.setUseCaches(false);
-            connection.setConnectTimeout(10000);
-            connection.setReadTimeout(10000);
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Accept", "application/json");
-            connection.connect();
-
-            // create JSONObject here
-            JSONObject jsonParam = new JSONObject();
-            jsonParam.put("password", strings[0]);
-            jsonParam.put("email", strings[1]);
-            jsonParam.put("name", strings[2]);
-
-            // send POST output
-            outputStream = new DataOutputStream(connection.getOutputStream());
-            outputStream.writeBytes(jsonParam.toString());
-    /*        outputStream.flush();
-            outputStream.close();*/
-
-            int httpResult = connection.getResponseCode();
-
-            if (httpResult == HttpURLConnection.HTTP_OK || httpResult == HttpURLConnection.HTTP_CREATED || httpResult == HttpURLConnection.HTTP_ACCEPTED || httpResult == HttpURLConnection.HTTP_NO_CONTENT) {
-
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
-                String line = null;
-
-                while ((line = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(line + "\n");
-                }
-
-                bufferedReader.close();
-
-                System.out.println(("" + stringBuilder.toString()));
-                return true;
-            } else {
-                System.out.println(connection.getResponseMessage());
-            }
-
-        } catch (MalformedURLException e) {
+            apiClient.registerNewUser(this.userName, this.email, this.password);
+            return RegisterHandlerResult.SUCCESS;
+        } catch (EmailTakenException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+            return RegisterHandlerResult.EMAIL_TAKEN;
+        } catch (UserRegistrationFailedException | IOException | GenericApiException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+            return RegisterHandlerResult.GENERIC_ERROR;
         }
-        return false;
     }
 
     @Override
@@ -95,15 +51,12 @@ public class RegisterHandler extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected void onPostExecute(Boolean result) {
+    protected void onPostExecute(RegisterHandlerResult result) {
         if (this.listener == null) return;
         this.listener.onFinished(result);
     }
 
     public interface RegistrationHandlerFinishedListener {
-        void onFinished(Boolean result);
-
+        void onFinished(RegisterHandlerResult result);
     }
-
-
 }

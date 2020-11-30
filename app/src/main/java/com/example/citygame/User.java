@@ -4,6 +4,7 @@ public class User {
     private String login;
     private String email;
     private String password;
+    private String accessToken;
     private static User user;
 
     private User() {
@@ -16,10 +17,11 @@ public class User {
         user.password = password;
     }
 
-    public static void instanceInitializerLogin(String email, String password) {
+    public static void instanceInitializerLogin(String email, String password, String accessToken) {
         user = new User();
         user.email = email;
         user.password = password;
+        user.accessToken = accessToken;
     }
 
     public static void instanceInitializerForgotPassword(String email) {

@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.citygame.EntranceHandlers.RegisterHandler;
+import com.example.citygame.EntranceHandlers.RegisterHandlerResult;
 import com.example.citygame.MenuActivity;
 import com.example.citygame.R;
 import com.example.citygame.User;
@@ -85,15 +86,22 @@ public class RegisterActivity extends AppCompatActivity {
                 if(isValidLogin(login)) {
                     new RegisterHandler(new RegisterHandler.RegistrationHandlerFinishedListener() {
                         @Override
-                        public void onFinished(Boolean resultIsOk) {
-                            if (resultIsOk) {
-                                User.instanceInitializerRegistration(login, email, password);
-                                startMenuActivity();
-                            } else {
-                                Toast.makeText(RegisterActivity.this, "Rejestracja niepomyslna", Toast.LENGTH_SHORT).show();
+                        public void onFinished(RegisterHandlerResult result) {
+
+                            switch (result) {
+                                case SUCCESS:
+                                    User.instanceInitializerRegistration(login, email, password);
+                                    startMenuActivity();
+                                    break;
+                                case EMAIL_TAKEN:
+                                    Toast.makeText(RegisterActivity.this, "Email zostal wykorzystany", Toast.LENGTH_SHORT).show();
+                                    break;
+                                case GENERIC_ERROR:
+                                    Toast.makeText(RegisterActivity.this, "Rejestracja niepomyslna", Toast.LENGTH_SHORT).show();
+                                    break;
                             }
                         }
-                    }).execute(credentialsArray);
+                    }, login, email, password).execute();
                 }
                 else {
                     Toast.makeText(RegisterActivity.this, "Niepoprawny login", Toast.LENGTH_SHORT).show();
