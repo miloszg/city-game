@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.citygame.EntranceHandlers.ForgotPasswordHandler;
+import com.example.citygame.EntranceHandlers.ForgotPasswordHandlerResult;
 import com.example.citygame.MenuActivity;
 import com.example.citygame.R;
 import com.example.citygame.User;
@@ -38,29 +39,25 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     public void request(View v) {
         email = emailEditText.getText().toString();
-        String[] credentialsArray = new String[]{email};
-
         new ForgotPasswordHandler(new ForgotPasswordHandler.ForgotPasswordHandlerListener() {
             @Override
-            public void onFinished(Boolean resultIsOk) {
-                if (resultIsOk) {
-                    User.instanceInitializerForgotPassword(email);
-                    startForgotPasswordTokenActivity();
-                } else {
-                    Toast.makeText(ForgotPasswordActivity.this, "Wysylanie prosby niepomyslne", Toast.LENGTH_SHORT).show();
+            public void onFinished(ForgotPasswordHandlerResult result) {
+                switch (result) {
+                    case TOKEN_SENT:
+                        User.instanceInitializerForgotPassword(email);
+                        startForgotPasswordTokenActivity();
+                    case EMAIL_NOT_RECOGNIZED:
+                        Toast.makeText(ForgotPasswordActivity.this, "Taki adres email nie istnieje", Toast.LENGTH_SHORT).show();
+                    case GENERIC_ERROR:
+                        Toast.makeText(ForgotPasswordActivity.this, "Wysylanie prosby niepomyslne", Toast.LENGTH_SHORT).show();
                 }
             }
-        }).execute(credentialsArray);
+        }, email).execute();
     }
 
     public void startForgotPasswordTokenActivity() {
         Intent forgotPasswordTokenActivity = new Intent(this,ForgotPasswordTokenActivity.class);
         startActivity(forgotPasswordTokenActivity);
-    }
-
-    public void startMenuActivity() {
-        Intent menuActivity = new Intent(this, MenuActivity.class);
-        startActivity(menuActivity);
     }
 }
 

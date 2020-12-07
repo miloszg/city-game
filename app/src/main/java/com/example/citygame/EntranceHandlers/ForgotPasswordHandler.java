@@ -2,75 +2,44 @@ package com.example.citygame.EntranceHandlers;
 
 import android.os.AsyncTask;
 
-import com.example.citygame.URLs;
+import com.example.citygame.api.client.ApiClient;
+import com.example.citygame.api.client.EmailNotRecognizedException;
+import com.example.citygame.api.client.GenericApiException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
-public class ForgotPasswordHandler extends AsyncTask<String, Void, Boolean> {
+public class ForgotPasswordHandler extends AsyncTask<String, Void, ForgotPasswordHandlerResult> {
 
-    private URLs urlGet = new URLs();
+    private String email;
     private ForgotPasswordHandlerListener forgotPasswordInterface;
 
-
-    public ForgotPasswordHandler(ForgotPasswordHandlerListener forgotPasswordInterface) {
+    public ForgotPasswordHandler(ForgotPasswordHandlerListener forgotPasswordInterface,
+                                 String email) {
         this.forgotPasswordInterface = forgotPasswordInterface;
+        this.email = email;
     }
 
     @Override
-    protected Boolean doInBackground(String... strings) {
-        HttpURLConnection connection = null;
-        StringBuilder stringBuilder = new StringBuilder();
+    protected ForgotPasswordHandlerResult doInBackground(String... strings) {
+        ApiClient apiClient = new ApiClient();
         try {
-            String urlAppended = new StringBuilder(urlGet.getServerURLPasswordReset()).append("?email=").append(strings[0]).toString();
-            URL url = new URL(urlAppended);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.setRequestMethod("GET");
-            connection.setUseCaches(false);
-            connection.setConnectTimeout(10000);
-            connection.setReadTimeout(10000);
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.connect();
-
-            int httpResult = connection.getResponseCode();
-
-            if (httpResult == HttpURLConnection.HTTP_OK || httpResult == HttpURLConnection.HTTP_CREATED || httpResult == HttpURLConnection.HTTP_ACCEPTED || httpResult == HttpURLConnection.HTTP_NO_CONTENT) {
-
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
-                String line = null;
-
-                while ((line = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(line + "\n");
-                }
-
-                bufferedReader.close();
-                System.out.println(("" + stringBuilder.toString()));
-                return true;
-            } else {
-                System.out.println(connection.getResponseMessage());
-            }
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            apiClient.passwordChangeRequest(this.email);
+            return ForgotPasswordHandlerResult.TOKEN_SENT;
+        } catch (EmailNotRecognizedException e) {
+            return ForgotPasswordHandlerResult.EMAIL_NOT_RECOGNIZED;
+        } catch (IOException | GenericApiException e) {
+            return ForgotPasswordHandlerResult.GENERIC_ERROR;
         }
-        return false;
     }
 
     @Override
-    protected void onPostExecute(Boolean result) {
+    protected void onPostExecute(ForgotPasswordHandlerResult result) {
         if (this.forgotPasswordInterface == null) return;
         this.forgotPasswordInterface.onFinished(result);
     }
 
     public interface ForgotPasswordHandlerListener {
-        void onFinished(Boolean result);
+        void onFinished(ForgotPasswordHandlerResult result);
     }
 
 }

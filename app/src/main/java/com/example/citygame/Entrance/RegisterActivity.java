@@ -78,7 +78,6 @@ public class RegisterActivity extends AppCompatActivity {
         login = loginEditText.getText().toString();
         password = passwordEditText.getText().toString();
         email = emailEditText.getText().toString();
-        String[] credentialsArray = new String[]{password, email, login};
         String passCheck = passwordCheckEditText.getText().toString();
 
         if (isValidPassword(password, passCheck)) {

@@ -52,7 +52,7 @@ public class ApiClient {
         }
     }
 
-    public UserLoginResponseDTO login(String email, String password) throws InvalidCredentialsException, IOException{
+    public UserLoginResponseDTO login(String email, String password) throws InvalidCredentialsException, IOException {
         HttpUrl url = HttpUrl.parse(BASE_URL + "/session").newBuilder()
                 .addEncodedQueryParameter("email", email)
                 .addEncodedQueryParameter("password", password)
@@ -71,6 +71,59 @@ public class ApiClient {
                     return this.serializer.fromJson(response.body().string(), UserLoginResponseDTO.class);
                 case 400:
                     throw new InvalidCredentialsException();
+                default:
+                    throw new GenericApiException();
+            }
+        } catch (IOException e) {
+            throw e;
+        } catch (NullPointerException e) {
+            throw new GenericApiException();
+        }
+    }
+
+    public void passwordChangeRequest(String email) throws EmailNotRecognizedException, IOException {
+        String serializedBody = this.serializer.toJson(new UserPasswordChangeRequestDTO(email));
+        RequestBody body = RequestBody.create(serializedBody, JSON);
+        Request request = new Request.Builder()
+                .url(BASE_URL + "/password_reset")
+                .post(body)
+                .build();
+
+        try (Response response = this.client.newCall(request).execute()) {
+
+            switch (response.code()) {
+                case 201:
+                case 202:
+                case 204:
+                    return;
+                case 400:
+                    throw new EmailNotRecognizedException();
+                default:
+                    throw new GenericApiException();
+            }
+        } catch (IOException e) {
+            throw e;
+        }
+    }
+
+    public UserPasswordChangeTokenResponseDTO passwordChangeTokenResponse(String token, String password) throws InvalidTokenException, IOException {
+        HttpUrl url = HttpUrl.parse(BASE_URL + "/password_reset").newBuilder()
+                .addEncodedQueryParameter("token", token)
+                .addEncodedQueryParameter("password", password)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        try (Response response = this.client.newCall(request).execute()) {
+
+            switch (response.code()) {
+                case 200:
+                case 202:
+                    return this.serializer.fromJson(response.body().string(), UserPasswordChangeTokenResponseDTO.class);
+                case 400:
+                    throw new InvalidTokenException();
                 default:
                     throw new GenericApiException();
             }

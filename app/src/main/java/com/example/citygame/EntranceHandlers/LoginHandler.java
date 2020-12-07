@@ -2,7 +2,6 @@ package com.example.citygame.EntranceHandlers;
 
 import android.os.AsyncTask;
 
-import com.example.citygame.URLs;
 import com.example.citygame.api.client.ApiClient;
 import com.example.citygame.api.client.InvalidCredentialsException;
 import com.example.citygame.api.client.UserLoginResponseDTO;
@@ -11,7 +10,6 @@ import java.io.IOException;
 
 public class LoginHandler extends AsyncTask<String, Void, LoginHandlerResult> {
 
-    private URLs urlGet = new URLs();
     private LoginHandlerFinishedListener loginListener;
 
     public LoginHandler(LoginHandlerFinishedListener loginListener) {
