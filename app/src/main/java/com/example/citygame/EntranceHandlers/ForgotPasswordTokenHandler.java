@@ -27,7 +27,6 @@ public class ForgotPasswordTokenHandler extends AsyncTask<String, Void, ForgotPa
         } catch (IOException | GenericApiException e) {
             return ForgotPasswordTokenHandlerStatus.GENERIC_ERROR;
         }
-
     }
 
     @Override

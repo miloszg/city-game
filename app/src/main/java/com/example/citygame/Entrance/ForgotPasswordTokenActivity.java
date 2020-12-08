@@ -19,6 +19,7 @@ import com.example.citygame.User;
 public class ForgotPasswordTokenActivity extends AppCompatActivity {
 
     private Button buttonChange;
+    private Button buttonMain;
     private EditText passwordOneEditText;
     private EditText passwordTwoEditText;
     private EditText tokenEditText;
@@ -33,6 +34,7 @@ public class ForgotPasswordTokenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password_token);
 
         buttonChange = findViewById(R.id.ChangeButton);
+        buttonMain = findViewById(R.id.MainButton);
         passwordOneEditText = findViewById(R.id.PasswordOneEditText);
         passwordTwoEditText = findViewById(R.id.PasswordTwoEditText);
         tokenEditText = findViewById(R.id.TokenEditText);
@@ -41,6 +43,13 @@ public class ForgotPasswordTokenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 changePassword(v);
+            }
+        });
+
+        buttonMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startMainActivity();
             }
         });
     }
@@ -62,10 +71,13 @@ public class ForgotPasswordTokenActivity extends AppCompatActivity {
                             Toast.makeText(ForgotPasswordTokenActivity.this, "Hasło zostało pomyślnie zmienione!", Toast.LENGTH_SHORT).show();
                             User.instanceDestroyer();
                             startMainActivity();
+                            break;
                         case INVALID_TOKEN:
                             Toast.makeText(ForgotPasswordTokenActivity.this, "Wprowadzono niepoprawny token", Toast.LENGTH_SHORT).show();
+                            break;
                         case GENERIC_ERROR:
                             Toast.makeText(ForgotPasswordTokenActivity.this, "Wysylanie prosby niepomyslne", Toast.LENGTH_SHORT).show();
+                            break;
                     }
                 }
             }).execute(credentialsArray);

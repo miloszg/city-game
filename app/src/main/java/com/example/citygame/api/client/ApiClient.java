@@ -121,6 +121,7 @@ public class ApiClient {
             switch (response.code()) {
                 case 200:
                 case 202:
+                case 204:
                     return this.serializer.fromJson(response.body().string(), UserPasswordChangeTokenResponseDTO.class);
                 case 400:
                     throw new InvalidTokenException();
