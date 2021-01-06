@@ -237,6 +237,10 @@ public class GroupActivity extends AppCompatActivity implements LocationListener
         return -1;
     }
 
+    public void showShortInfo(String content){
+        Toast.makeText(GroupActivity.this, content, Toast.LENGTH_SHORT).show();
+    }
+
     public void addQuestionsToMarker(final Marker marker){
         final String[] correctAnswer = new String[1];
         final List<String> answers = new ArrayList<>();

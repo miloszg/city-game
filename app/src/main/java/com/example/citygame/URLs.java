@@ -8,6 +8,9 @@ public class URLs {
     private String serverURLscenarios = "";
     private String serverURLlist = "";
 
+    public String urlScenarios = "http://34.91.192.193:3000/api/v1/scenarios";
+    public String urlGames = "http://34.91.192.193:3000/api/v1/games";
+
     public URLs() {
     }
 
