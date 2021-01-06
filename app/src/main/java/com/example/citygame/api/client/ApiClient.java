@@ -1,5 +1,10 @@
 package com.example.citygame.api.client;
 
+import com.example.citygame.Models.GameRequest;
+import com.example.citygame.Models.GameResponse;
+import com.example.citygame.Models.ScenarioRequest;
+import com.example.citygame.Models.ScenarioResponse;
+import com.example.citygame.Models.User;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -79,6 +84,121 @@ public class ApiClient {
         } catch (NullPointerException e) {
             throw new GenericApiException();
         }
+    }
+
+    public String createScenario(ScenarioRequest scenario) throws IOException {
+        Request request;
+        try {
+            String serializedBody = this.serializer.toJson(scenario);
+            RequestBody body = RequestBody.create(serializedBody, JSON);
+            request = new Request.Builder()
+                    .url(BASE_URL + "/scenarios")
+                    .addHeader("Authorization", User.getInstance().getAccessToken())
+                    .post(body)
+                    .build();
+        }catch (Exception e){
+            return e.getMessage();
+        }
+
+        try (Response response = this.client.newCall(request).execute()) {
+            switch (response.code()) {
+                case 201:
+                case 202:
+                case 204:
+                case 400:
+                default:
+            }
+        } catch (IOException e) {
+            return e.getMessage();
+        }
+
+        return "ok";
+    }
+
+    public ScenarioResponse[] getAllScenarios(){
+        Request request = new Request.Builder()
+                .url(BASE_URL + "/scenarios")
+                .addHeader("Authorization", User.getInstance().getAccessToken())
+                .build();
+
+        try (Response response = this.client.newCall(request).execute()) {
+            switch (response.code()) {
+                case 201:
+                case 200:
+                    return this.serializer.fromJson(response.body().string(), ScenarioResponse[].class);
+                case 204:
+                case 400:
+                default:
+            }
+        } catch (IOException e) {
+        }
+        return null;
+    }
+
+    public GameResponse[] getAllGames(){
+        Request request = new Request.Builder()
+                .url(BASE_URL + "/games")
+                .addHeader("Authorization", User.getInstance().getAccessToken())
+                .build();
+
+        try (Response response = this.client.newCall(request).execute()) {
+            switch (response.code()) {
+                case 201:
+                case 200:
+                    return this.serializer.fromJson(response.body().string(), GameResponse[].class);
+                case 204:
+                case 400:
+                default:
+            }
+        } catch (IOException e) {
+        }
+        return null;
+    }
+
+    public void createNewGame(GameRequest game){
+        Request request = null;
+        try {
+            String serializedBody = this.serializer.toJson(game);
+            RequestBody body = RequestBody.create(serializedBody, JSON);
+            request = new Request.Builder()
+                    .url(BASE_URL + "/games")
+                    .addHeader("Authorization", User.getInstance().getAccessToken())
+                    .post(body)
+                    .build();
+        }catch (Exception e){
+        }
+
+        try (Response response = this.client.newCall(request).execute()) {
+            switch (response.code()) {
+                case 201:
+                case 202:
+                case 204:
+                case 400:
+                default:
+            }
+        } catch (IOException e) {
+        }
+
+    }
+
+    public ScenarioResponse getScenario(String id){
+        Request request = new Request.Builder()
+                .url(BASE_URL + "/scenarios/"+id)
+                .addHeader("Authorization", User.getInstance().getAccessToken())
+                .build();
+
+        try (Response response = this.client.newCall(request).execute()) {
+            switch (response.code()) {
+                case 201:
+                case 200:
+                    return this.serializer.fromJson(response.body().string(), ScenarioResponse.class);
+                case 204:
+                case 400:
+                default:
+            }
+        } catch (IOException e) {
+        }
+        return null;
     }
 
     public void passwordChangeRequest(String email) throws EmailNotRecognizedException, IOException {

@@ -48,4 +48,8 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+    public String getAccessToken(){
+        return accessToken;
+    }
 }

@@ -76,6 +76,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
     private ImageButton buttonCenter;
     private ImageButton buttonZoom;
     private ImageButton buttonZoomOut;
+    private Button btnMap;
     private double zoom = 14.5;
     private int GALLERY = 1, CAMERA = 2;
     private static final String IMAGE_DIRECTORY = "/city_game";
@@ -94,6 +95,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                     && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             }
+
         setContentView(R.layout.activity_map_new);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         Context ctx = getApplicationContext();
@@ -102,6 +104,11 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
         Intent intent = getIntent();
         String extraString=intent.getStringExtra("game");
+        String extraTag = intent.getStringExtra("tag");
+
+        ArrayList<Marker> extraMarkers = (ArrayList<Marker>) intent.getSerializableExtra("markers");
+        ArrayList<QuestionModel> extraQuestions = (ArrayList<QuestionModel>) intent.getSerializableExtra("questions");
+
         Toast.makeText(this, extraString, Toast.LENGTH_SHORT).show();
         Log.i("kupa","cos tam"+extraString);
 
@@ -113,6 +120,8 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
         buttonCenter = findViewById(R.id.ic_map_center);
         buttonZoom = findViewById(R.id.ic_map_add);
         buttonZoomOut = findViewById(R.id.ic_map_minus);
+
+        btnMap = findViewById(R.id.btnOnTheMap);
 
         buttonCenter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,6 +147,20 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
             @Override
             public void onClick(View v) {
                 mapController.setZoom(--zoom);
+            }
+        });
+
+        if(extraTag != null){
+        if(extraTag.equals("joinGroup")){
+            btnMap.setText("Dołącz do gry!");
+            btnMap.setBackgroundColor(Color.parseColor("#ff6633"));
+        }}else {
+            btnMap.setVisibility(View.INVISIBLE);
+        }
+        btnMap.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //TODO: patch, dodanie id_usera do user_ids of the specific game
             }
         });
 
@@ -176,7 +199,13 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
 
         int i=1;
         //if(extraString=="1") {
-            for (Marker m : MarkerListActivity.list) {
+            for (Marker m : extraMarkers) {
+                for (QuestionModel q: extraQuestions){
+                    if(q.markerId == m.id){
+                        m.question = q;
+                    }
+                }
+
                 final Marker mInfo = m;
                 org.osmdroid.views.overlay.Marker marker = new org.osmdroid.views.overlay.Marker(mapView);
                 GeoPoint position = new GeoPoint(Float.valueOf(m.getLat()), Float.valueOf(m.getLon()));
@@ -342,7 +371,8 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                     String result;
                     // find which radioButton is checked by id
                     if (selectedId == ansA.getId()) {
-                        if (ansA.getText().toString() == question.correctAnswer) {
+                        String ans = ansA.getText().toString();
+                        if (ans.equals(question.correct)) {
                             result = "Prawidłowa odpowiedź!";
                             questionResult.setTextColor(Color.parseColor("#294E2B"));
                         } else {
@@ -351,7 +381,8 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                         }
                         //.setText("You chose 'Sound' option");
                     } else if (selectedId == ansB.getId()) {
-                        if (ansB.getText().toString() == question.correctAnswer) {
+                        String ans = ansB.getText().toString();
+                        if (ans.equals(question.correct)) {
                             result = "Prawidłowa odpowiedź!";
                             questionResult.setTextColor(Color.parseColor("#294E2B"));
                         } else {
@@ -360,7 +391,8 @@ public class MapActivity extends AppCompatActivity implements LocationListener {
                         }
                         //textView.setText("You chose 'Vibration' option");
                     } else {
-                        if (qC.getText().toString() == question.correctAnswer) {
+                        String ans = qC.getText().toString();
+                        if (ans.equals(question.correct)) {
                             result = "Prawidłowa odpowiedź!";
                             questionResult.setTextColor(Color.parseColor("#294E2B"));
                         } else {

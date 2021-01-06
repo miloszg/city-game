@@ -1,66 +1,61 @@
-package com.example.citygame.RouteList;
+package com.example.citygame;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-
 import com.example.citygame.Map.MapActivity;
 import com.example.citygame.MarkersList.MarkerListActivity;
+import com.example.citygame.Models.GameResponse;
 import com.example.citygame.Models.Marker;
 import com.example.citygame.Models.QuestionModel;
 import com.example.citygame.Models.ScenarioResponse;
-import com.example.citygame.R;
+import com.example.citygame.RouteList.RouteApp;
+import com.example.citygame.RouteList.RouteListActivity;
+import com.example.citygame.RouteList.RouteListAdapter;
 import com.example.citygame.api.client.ApiClient;
 
 import java.util.ArrayList;
-import java.util.List;
 
-
-public class RouteListActivity extends AppCompatActivity {
-    private static final String TAG = "RouteListActivity";
-    public static ArrayList<RouteApp> routeList = new ArrayList<>();
+public class JoinGroupActivity extends AppCompatActivity {
+    public static ArrayList<GameApp> gamesList = new ArrayList<>();
     ApiClient apiClient = new ApiClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_route);
+        setContentView(R.layout.activity_games);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
-        final ListView routerList = findViewById(R.id.routeListView);
+        final ListView routerList = findViewById(R.id.routeListView1);
 
-
-        final RouteListAdapter adapter = new RouteListAdapter(this, R.layout.custom_view_layout,routeList);
+        final GamesListAdapter adapter = new GamesListAdapter(this, R.layout.game_item, gamesList);
         routerList.setAdapter(adapter);
 
-        if(routeList.isEmpty()) {
+        if(gamesList.isEmpty()) {
             Thread thread = new Thread(new Runnable() {
 
                 @Override
                 public void run() {
-                    RouteApp route = new RouteApp("Gdańsk City Game", MarkerListActivity.list, R.drawable.ic_game);
-                    routeList.add(route);
-                    adapter.notifyDataSetChanged();
-
                     try  {
-                        ScenarioResponse[] scenarios = apiClient.getAllScenarios();
+                        GameResponse[] games = apiClient.getAllGames();
 
-                        for(int i = 0; i<scenarios.length;i++){
+                        for(GameResponse g: games){
+                            ScenarioResponse scenario = apiClient.getScenario(g.scenario.id);
+
                             ArrayList<Marker> markers = new ArrayList<Marker>();
 
-                            for(int j =0;j<scenarios[i].markers.size();j++) {
-                                Marker m = new Marker(j, scenarios[i].markers.get(j).lat,scenarios[i].markers.get(j).lon,scenarios[i].markers.get(j).title);
-                                QuestionModel q = new QuestionModel(scenarios[i].markers.get(j).question.content,scenarios[i].markers.get(j).question.correct,scenarios[i].markers.get(j).question.answers);
+                            for(int j =0;j<scenario.markers.size();j++) {
+                                Marker m = new Marker(j, scenario.markers.get(j).lat,scenario.markers.get(j).lon,scenario.markers.get(j).title);
+                                QuestionModel q = new QuestionModel(scenario.markers.get(j).question.content,scenario.markers.get(j).question.correct,scenario.markers.get(j).question.answers);
                                 q.markerId = j;
 
                                 m.question = q;
@@ -68,10 +63,11 @@ public class RouteListActivity extends AppCompatActivity {
                                 markers.add(m);
                             }
 
-                            route = new RouteApp(scenarios[i].name,markers, R.drawable.ic_game);
-                            routeList.add(route);
+                            GameApp route = new GameApp(g.title, g,R.drawable.ic_game);
+                            gamesList.add(route);
                             adapter.notifyDataSetChanged();
                         }
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -89,15 +85,14 @@ public class RouteListActivity extends AppCompatActivity {
         routerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i(TAG,"Option Menu Clicked");
-                Toast.makeText(RouteListActivity.this, "chosen option: "+position, Toast.LENGTH_SHORT).show();
                 Intent cityGameIntent = new Intent(getApplicationContext(), MapActivity.class);
                 cityGameIntent.putExtra("game",position);
-                cityGameIntent.putExtra("markers", routeList.get(position).getRouteMarkers());
+                cityGameIntent.putExtra("tag", "joinGroup");
+                cityGameIntent.putExtra("markers", gamesList.get(position).getRouteMarkers());
 
                 ArrayList<QuestionModel> questions = new ArrayList<QuestionModel>();
 
-                for (Marker routeMarker : routeList.get(position).getRouteMarkers()) {
+                for (Marker routeMarker : gamesList.get(position).getRouteMarkers()) {
                     questions.add(routeMarker.question);
                 }
 

@@ -50,4 +50,11 @@
             android:layout_alignStart="@+id/ic_map_add"
             android:layout_marginTop="10dp" />
 
+        <Button
+            android:id="@+id/btnOnTheMap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/mapView"
+            android:text="Button" />
+
 </RelativeLayout>

@@ -64,7 +64,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void openProfileActivity() {
-        Intent profile = new Intent(this, MapActivity.class);
+        Intent profile = new Intent(this, JoinGroupActivity.class);
         startActivity(profile);
     }
 

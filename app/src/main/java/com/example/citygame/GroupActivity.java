@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.citygame.Models.Marker;
+import com.example.citygame.Models.MarkerRequest;
 import com.example.citygame.Models.QuestionModel;
+import com.example.citygame.Models.QuestionRequest;
+import com.example.citygame.Models.ScenarioRequest;
+import com.example.citygame.api.client.ApiClient;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -41,6 +46,7 @@ import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +57,8 @@ public class GroupActivity extends AppCompatActivity implements LocationListener
     IMapController mapController;
     List<GeoPoint> geoPoints = new ArrayList<>();
     List<Marker> path = new ArrayList<>();
+    List<MarkerRequest> pathRequest = new ArrayList<>();
+    ApiClient apiClient = new ApiClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +79,37 @@ public class GroupActivity extends AppCompatActivity implements LocationListener
             @Override
             public void onClick(View view)
             {
-                //TODO save new path
+                final ScenarioRequest scenario = new ScenarioRequest();
+                scenario.name = "Testowy";
+                scenario.markers = new ArrayList<MarkerRequest>();
+                for(int i=0;i<path.size();i++){
+                    MarkerRequest m = new MarkerRequest();
+                    m.lat = path.get(i).lat;
+                    m.lon = path.get(i).lon;
+                    m.title = path.get(i).title;
 
+                    QuestionRequest q = new QuestionRequest();
+                    q.correct = path.get(i).question.correct;
+                    q.answers = path.get(i).question.answers;
+                    q.content = path.get(i).question.content;
+
+                    m.question = q;
+
+                    scenario.markers.add(m);
+                }
+
+                    Thread thread = new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            try  {
+                                apiClient.createScenario(scenario);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    thread.start();
             }
         });
 
@@ -154,7 +191,7 @@ public class GroupActivity extends AppCompatActivity implements LocationListener
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 String item = marker.question.answers.get(position);
-                marker.question.correctAnswer = item;
+                marker.question.correct = item;
 
                 for (int a = 0; a < listOfAnswers.getChildCount(); a++) {
                     if(position == a ){
@@ -190,7 +227,7 @@ public class GroupActivity extends AppCompatActivity implements LocationListener
             public void onClick(View view)
             {
                 Marker m = new Marker(marker.id, marker.lat, marker.lon, marker.title);
-                m.question = new QuestionModel(marker.question.content, marker.question.correctAnswer, new ArrayList<>(marker.question.answers));
+                m.question = new QuestionModel(marker.question.content, marker.question.correct, new ArrayList<>(marker.question.answers));
 
                 marker.title = titleMarker.getText().toString();
                 marker.question = new QuestionModel(contentQuestion.getText().toString(),"", marker.question.answers);
@@ -220,7 +257,7 @@ public class GroupActivity extends AppCompatActivity implements LocationListener
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 path.get(index).title = marker.title;
-                path.get(index).question = new QuestionModel(marker.question.content, marker.question.correctAnswer, marker.question.answers);
+                path.get(index).question = new QuestionModel(marker.question.content, marker.question.correct, marker.question.answers);
             }
         });
         AlertDialog alertDialog=dialog.create();

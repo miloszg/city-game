@@ -187,7 +187,7 @@ public class ImageAdapter extends PagerAdapter {
                     txt.setText(searchMarkerById(photos.get(position).idMarker).question.content);
 
                     TextView txtAns = item.findViewById(R.id.questionAns);
-                    txtAns.setText(searchMarkerById(photos.get(position).idMarker).question.correctAnswer);
+                    txtAns.setText(searchMarkerById(photos.get(position).idMarker).question.correct);
                 }
             }
         }

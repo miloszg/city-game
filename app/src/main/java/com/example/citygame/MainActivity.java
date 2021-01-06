@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent login = new Intent(getApplicationContext(), MenuActivity.class);
+                Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(login);
             }
         });
@@ -101,19 +101,31 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         QuestionModel cityHallQ = new QuestionModel("W jakim stylu został zbudowany Ratusz?", "Gotyckim", Arrays.asList("Romański", "Gotycki", "Neogotycki"));
         QuestionModel greenGateQ = new QuestionModel("Jaki były prezydent RP posiadał biuro w Zielonej Bramie?", "Lech Wałęsa", Arrays.asList("Aleksander Kwaśniewski", "Lech Wałęsa", "Bronisław Komorowski"));
 
-
+        neptunQ.markerId = 7;
         neptun.setQuestion(neptunQ);
+        soldekQ.markerId = 10;
         soldek.setQuestion(soldekQ);
+        craneQ.markerId = 9;
         crane.setQuestion(craneQ);
+        mariackaQ.markerId = 12;
         mariacka.setQuestion(mariackaQ);
+        bazyQ.markerId = 13;
         bazylika.setQuestion(bazyQ);
+        arsenalQ.markerId = 4;
         arsenal.setQuestion(arsenalQ);
+        goledQ.markerId = 5;
         goldenGate.setQuestion(goledQ);
+        hotelScandicQ.markerId = 0;
         scandic.setQuestion(hotelScandicQ);
+        oldTownCityHallQ.markerId = 1;
         oldTownHall.setQuestion(oldTownCityHallQ);
+        statueOfJHeweliuszQ.markerId = 2;
         heweliusz.setQuestion(statueOfJHeweliuszQ);
+        cityMarketQ.markerId = 3;
         market.setQuestion(cityMarketQ);
+        cityHallQ.markerId = 6;
         townHall.setQuestion(cityHallQ);
+        greenGateQ.markerId = 8;
         greenGate.setQuestion(greenGateQ);
 
         MarkerListActivity.list.add(scandic);
