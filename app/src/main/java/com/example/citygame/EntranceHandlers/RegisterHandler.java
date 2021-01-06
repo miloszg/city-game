@@ -47,7 +47,6 @@ public class RegisterHandler extends AsyncTask<Void, Void, RegisterHandlerResult
 
     @Override
     protected void onProgressUpdate(Void... values) {
-        //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
     }
 
     @Override

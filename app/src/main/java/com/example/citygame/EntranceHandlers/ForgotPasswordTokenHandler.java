@@ -36,7 +36,6 @@ public class ForgotPasswordTokenHandler extends AsyncTask<String, Void, ForgotPa
 
     @Override
     protected void onProgressUpdate(Void... values) {
-        //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
     }
 
     @Override
