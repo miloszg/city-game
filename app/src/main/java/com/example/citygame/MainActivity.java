@@ -11,11 +11,12 @@ import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.example.citygame.Entrance.LoginActivity;
+import com.example.citygame.Entrance.RegisterActivity;
 import com.example.citygame.MarkersList.Marker;
 import com.example.citygame.MarkersList.MarkerListActivity;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
@@ -149,10 +150,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 return false;
         }
     }
-
-
-
-
     @Override
     public void onBackPressed() {
 

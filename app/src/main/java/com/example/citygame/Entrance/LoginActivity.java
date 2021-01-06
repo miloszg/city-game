@@ -1,8 +1,6 @@
-package com.example.citygame;
+package com.example.citygame.Entrance;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.AsyncTask;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,14 +9,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.citygame.EntranceHandlers.LoginHandler;
+import com.example.citygame.EntranceHandlers.LoginHandlerResult;
+import com.example.citygame.EntranceHandlers.LoginHandlerResultStatus;
+import com.example.citygame.MenuActivity;
+import com.example.citygame.R;
+import com.example.citygame.User;
+
 public class LoginActivity extends AppCompatActivity {
 
     private Button buttonLogin;
     private Button buttonForgotPassword;
     private EditText emailEditText;
     private EditText passwordEditText;
-    private String password;
-    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +49,28 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View v) {
-        password = passwordEditText.getText().toString();
-        email = emailEditText.getText().toString();
-        String[] credentialsArray = new String[]{password, email};
+        final String password = passwordEditText.getText().toString();
+        final String email = emailEditText.getText().toString();
 
         new LoginHandler(new LoginHandler.LoginHandlerFinishedListener() {
 
             @Override
-            public void onFinished(Boolean resultIsOk) {
-                if (resultIsOk) {
-                    User.instanceInitializerLogin(email, password);
-                    startMenuActivity();
-                } else {
-                    Toast.makeText(LoginActivity.this, "Logowanie niepomyslne", Toast.LENGTH_SHORT).show();
+            public void onFinished(LoginHandlerResult result) {
+
+                switch (result.getStatus()) {
+                    case SUCCESS:
+                        User.instanceInitializerLogin(email, password, result.getUser().getAccessToken());
+                        startMenuActivity();
+                        break;
+                    case INVALID_CREDENTIALS:
+                        Toast.makeText(LoginActivity.this, "Niepoprawne dane logowania", Toast.LENGTH_SHORT).show();
+                        break;
+                    case GENERIC_ERROR:
+                        Toast.makeText(LoginActivity.this, "Logowanie niepomyslne", Toast.LENGTH_SHORT).show();
+                        break;
                 }
             }
-        }).execute(credentialsArray);
+        }).execute(password, email);
     }
 
     public void startForgotPasswordActivity() {
@@ -70,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void startMenuActivity() {
-        Intent menuActivity = new Intent(this,MenuActivity.class);
+        Intent menuActivity = new Intent(this, MenuActivity.class);
         startActivity(menuActivity);
     }
 }
