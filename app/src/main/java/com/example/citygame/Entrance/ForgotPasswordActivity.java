@@ -1,5 +1,6 @@
 package com.example.citygame.Entrance;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,13 +11,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.citygame.EntranceHandlers.ForgotPasswordHandler;
-import com.example.citygame.MenuActivity;
+import com.example.citygame.EntranceHandlers.ForgotPasswordHandlerResult;
+import com.example.citygame.MainActivity;
 import com.example.citygame.R;
 import com.example.citygame.Models.User;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
     private Button buttonRequest;
+    private Button buttonMain;
     private EditText emailEditText;
     private String email;
 
@@ -26,6 +29,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);
 
         buttonRequest = findViewById(R.id.RequestButton);
+        buttonMain = findViewById(R.id.MainButton);
         emailEditText = findViewById(R.id.EmailEditText);
 
         buttonRequest.setOnClickListener(new View.OnClickListener() {
@@ -34,23 +38,34 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 request(v);
             }
         });
+
+        buttonMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startMainActivity();
+            }
+        });
     }
 
     public void request(View v) {
         email = emailEditText.getText().toString();
-        String[] credentialsArray = new String[]{email};
-
         new ForgotPasswordHandler(new ForgotPasswordHandler.ForgotPasswordHandlerListener() {
             @Override
-            public void onFinished(Boolean resultIsOk) {
-                if (resultIsOk) {
-                    User.instanceInitializerForgotPassword(email);
-                    startForgotPasswordTokenActivity();
-                } else {
-                    Toast.makeText(ForgotPasswordActivity.this, "Wysylanie prosby niepomyslne", Toast.LENGTH_SHORT).show();
+            public void onFinished(ForgotPasswordHandlerResult result) {
+                switch (result) {
+                    case TOKEN_SENT:
+                        User.instanceInitializerForgotPassword(email);
+                        startForgotPasswordTokenActivity();
+                        break;
+                    case EMAIL_NOT_RECOGNIZED:
+                        Toast.makeText(ForgotPasswordActivity.this, "Taki adres email nie istnieje", Toast.LENGTH_SHORT).show();
+                        break;
+                    case GENERIC_ERROR:
+                        Toast.makeText(ForgotPasswordActivity.this, "Wysylanie prosby niepomyslne", Toast.LENGTH_SHORT).show();
+                        break;
                 }
             }
-        }).execute(credentialsArray);
+        }, email).execute();
     }
 
     public void startForgotPasswordTokenActivity() {
@@ -58,9 +73,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         startActivity(forgotPasswordTokenActivity);
     }
 
-    public void startMenuActivity() {
-        Intent menuActivity = new Intent(this, MenuActivity.class);
-        startActivity(menuActivity);
+    public void startMainActivity() {
+        Intent mainActivity = new Intent(this, MainActivity.class);
+        startActivity(mainActivity);
     }
 }
 
